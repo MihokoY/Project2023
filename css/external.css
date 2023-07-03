@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
+
+body {
+    background-color: #e2c8a0;
+}
+
+/* Header Title */
+.title {
+	font-family: 'Irish Grover', cursive;
+}
+
+/* Image size */
+.relative img {
+	width: 100%;
+}
+.relative {
+    position: relative;
+}
+
+.absolute {
+	position: absolute;
+	top: 45%;
+	left: 25%;
+	color: black;
+}
+.absolute a{
+    color: inherit;
+}
