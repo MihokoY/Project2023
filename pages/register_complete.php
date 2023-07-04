@@ -37,7 +37,7 @@
             <img src="../images/home1.jpg" alt="backimage">
             <div class="absolute">
                 <h1>You are our member now!</h1>
-                <h2><a href="../pages/map.html">Let's explore our Map ⇒</a></h2>
+                <h2><a href="../pages/map.php">Let's explore our Map ⇒</a></h2>
             </div>
         </div>
     </div>
