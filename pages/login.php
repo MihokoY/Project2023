@@ -1,3 +1,53 @@
+<?php
+require_once "dbconnect.php";
+
+//Start session
+session_start();
+
+// If the user is logged in, redirect to map page
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    header("location: map.php");
+    exit;
+}
+
+if (!empty($_POST)) {
+    // Blank check
+    if ($_POST['email'] === "") {
+        $error['email']  = "blank";
+    }
+    if ($_POST['password'] === "") {
+        $error['password']  = "blank";
+    }
+    
+    if (!isset($error)) {
+        //Get the relevant user information from email
+        $stmt = $db->prepare('select * from member where email = ?');
+        //$stmt->bindValue('email',$datas['email'],PDO::PARAM_INT);
+        $stmt->execute([$_POST['email']]);
+
+            //If there is user information, it is stored in a variable
+            if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                //Check if the password is correct
+                if (password_verify($_POST['password'],$row['pass'])) {
+                    //Set a new session ID
+                    session_regenerate_id(true);
+                    //Store login information in session variables
+                    $_SESSION["loggedin"] = true;
+                    //$_SESSION["id"] = $row['id'];
+                    //$_SESSION["name"] =  $row['name'];
+                    //Redirect to map page
+                    header("location:map.php");
+                    exit();
+                } else {
+                    $error['password'] = "invalid";
+                }
+            }else {
+                $error['email'] = "invalid";
+            }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,15 +83,24 @@
         </div>
     </nav>
     <div class="container">
-        <form>
-            <h2 class="login_h2">Login</h2>
+        <h2 class="login_h2">Login</h2>
+        <?php if (!empty($error["email"]) && $error['email'] === 'blank'): ?>
+            <p class="error" style="color:red">*Please enter your email and password.</p>
+        <?php elseif (!empty($error["password"]) && $error['password'] === 'blank'): ?>
+            <p class="error" style="color:red">Invalid username or password.</p>
+        <?php elseif (!empty($error["email"]) && $error['email'] === 'invalid'): ?>
+            <p class="error" style="color:red">*Invalid username or password.</p>
+        <?php elseif (!empty($error["password"]) && $error['password'] === 'invalid'): ?>
+            <p class="error" style="color:red">*Invalid username or password.</p>
+        <?php endif ?>
+        <form id="loginForm" name="loginForm" action="" method="post">
             <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="email">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" id="email" name="email">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password">
+                <input type="text" class="form-control" id="password" name="password">
             </div>
 
             <!--
@@ -51,6 +110,7 @@
             </div>
             -->
             <button type="submit" class="btn btn-primary">Login</button>
+            <p>Not our member? <a href="register.php">Join member now</a></p>
         </form>
     </div>
 </body>

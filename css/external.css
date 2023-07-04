@@ -6,22 +6,22 @@ body {
 
 /* Header Title */
 .title {
-	font-family: 'Irish Grover', cursive;
+    font-family: 'Irish Grover', cursive;
 }
 
 /* Image size */
 .relative img {
-	width: 100%;
+    width: 100%;
 }
 .relative {
     position: relative;
 }
 
 .absolute {
-	position: absolute;
-	top: 45%;
-	left: 25%;
-	color: black;
+    position: absolute;
+    top: 45%;
+    left: 25%;
+    color: black;
 }
 .absolute a{
     color: inherit;

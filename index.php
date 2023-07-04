@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +10,7 @@
     <title>Home</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/external.css">
+    <link rel="stylesheet" href="css/external_footer.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -14,6 +19,24 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            <?php if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true): ?>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/map.php">Explore map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/mymap.php">My map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/logout.php">Logout</a>
+                    </li>
+                </ul>
+            </div>
+            <?php else: ?>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -30,6 +53,7 @@
                     </li>
                 </ul>
             </div>
+            <?php endif ?>
         </div>
     </nav>
 
@@ -72,6 +96,11 @@
         </button>
     </div>
 
+    <footer class="footer">
+        <div class="container text-center">
+            <p class="text-white text-muted title">©2023 Archaeology club, Inc. All Rights Reserved</p>
+        </div>
+    </footer>
 
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
     <script src="js/bootstrap.min.js"></script>

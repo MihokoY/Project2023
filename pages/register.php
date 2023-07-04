@@ -2,54 +2,54 @@
 //Conneco to database
 require('dbconnect.php');
 
-    if (!empty($_POST)) {
-        // Blank check
-        if ($_POST['username'] === "") {
-            $error['username'] = "blank";
-        }
-        if ($_POST['email'] === "") {
-            $error['email'] = "blank";
-        }
-        if ($_POST['password'] === "") {
-            $error['password'] = "blank";
-        }
-        
-        if (!isset($error)) {
-            //Check if it is a duplicate email in the database.
-            $member = $db->prepare('SELECT COUNT(*) as cnt FROM member WHERE email=?');
-            $member->execute(array(
-                $_POST['email']
-            ));
-            $record = $member->fetch();
-            if ($record['cnt'] > 0) {
-                $error['email'] = 'duplicate';
-            }
+if (!empty($_POST)) {
+    // Blank check
+    if ($_POST['username'] === "") {
+        $error['username'] = "blank";
+    }
+    if ($_POST['email'] === "") {
+        $error['email'] = "blank";
+    }
+    if ($_POST['password'] === "") {
+        $error['password'] = "blank";
+    }
 
-            //Email validation
-            if (!$email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                $error['email'] = 'invalid';
-                //return false;
-            }
-            
-            //Password validation
-            if (preg_match('/\A(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,100}+\z/i', $_POST['password'])) {
-                $h_password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-            } else {
-                $error['$password'] = 'invalid';
-                //return false;
-            }
+    if (!isset($error)) {
+        //Check if it is a duplicate email in the database.
+        $member = $db->prepare('SELECT COUNT(*) as cnt FROM member WHERE email=?');
+        $member->execute(array(
+            $_POST['email']
+        ));
+        $record = $member->fetch();
+        if ($record['cnt'] > 0) {
+            $error['email'] = 'duplicate';
         }
- 
-        if (!isset($error)) {
-            // Set data into database
-            $stmt = $db->prepare("insert into member(name, email, pass) value(?, ?, ?)");
-            $stmt->execute([$_POST['username'], $_POST['email'], $h_password]);
-            
-            // Move to register_complete page
-            header('Location: register_complete.php');
-            exit();
+
+        //Email validation
+        if (!$email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+            $error['email'] = 'invalid';
+            //return false;
+        }
+
+        //Password validation
+        if (preg_match('/\A(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,100}+\z/i', $_POST['password'])) {
+            $h_password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        } else {
+            $error['$password'] = 'invalid';
+            //return false;
         }
     }
+
+    if (!isset($error)) {
+        // Set data into database
+        $stmt = $db->prepare("insert into member(name, email, pass) value(?, ?, ?)");
+        $stmt->execute([$_POST['username'], $_POST['email'], $h_password]);
+
+        // Move to register_complete page
+        header('Location: register_complete.php');
+        exit();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -88,8 +88,8 @@ require('dbconnect.php');
     </nav>
     
     <div class="container">
-        <form id="registerForm" name="registerForm" action=""  method="POST">
-            <h2 class="login_h2">Join member</h2>
+        <h2 class="login_h2">Join member</h2>
+        <form id="registerForm" name="registerForm" action=""  method="POST">           
             <div class="mb-3">
                 <label for="username" class="form-label">User name</label>
                 <input type="text" class="form-control" id="username" name="username">
@@ -121,8 +121,8 @@ require('dbconnect.php');
                 </div>
             </div>
             <button type="submit" id="register" name="register" class="btn btn-primary">Register</button>
-            <button type="reset" class="btn btn-primary">Reset</button>
-            <button type="back" class="btn btn-primary"><a href="../index.php">Back</a></button>
+            <input type="reset" value="Reset" name="reset" class="btn btn-primary">
+            <input type="button" value="Back" name="back" class="btn btn-primary" onclick="location.href='../index.php'">
         </form>
     </div>
 </body>
