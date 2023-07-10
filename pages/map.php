@@ -1,10 +1,35 @@
 <?php
 session_start();
+
 // If the user is logged in, redirect to this page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: login.php");
-    exit;
+//if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+//    header("location: login.php");
+//    exit;
+//}
+
+
+// Connect to the database and execute query
+require('dbconnect.php');
+//$stmt = $db->prepare("SELECT name,description,X(coordinate),Y(coordinate) FROM site");
+$stmt = $db->prepare("SELECT latitude,longitude,name,description FROM sites");
+$stmt->execute();
+
+// Initialize array
+$siteData=array();
+while($row=$stmt->fetch(PDO::FETCH_ASSOC)){ // Get results in the array
+    $siteData[]=array(
+        //'coordinate'=>$row['coordinate'],
+        //'latitude'=>$row['X(coordinate)'],
+        //'longitude '=>$row['Y(coordinate)'],
+        'latitude'=>$row['latitude'],
+        'longitude'=>$row['longitude'],
+        'name'=>$row['name'],
+        'description'=>$row['description']
+    );
 }
+
+// Convert PHP array to JSON formatted data
+$json = json_encode($siteData);
 ?>
 
 
@@ -25,10 +50,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
      crossorigin=""></script>
     <style>
     #map {
-      width: 100%;
-      height: 550px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        height: 650px;
     }
-  </style>
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -76,6 +104,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </nav>
     
     <div id="map"></div>
+
     <script>
         var map = L.map('map').setView([53.4494762, -7.5029786], 7);
         
@@ -83,6 +112,33 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
+        
+        var popup = L.popup()
+        .setLatLng([54.769009, -10.042556])
+        .setContent("<b>Let's explore map!</b>")
+        .openOn(map);
+    
+        // Passing the array from PHP to JavaScript
+        var array = <?php echo $json; ?>;
+        var markers;
+        array.forEach(elm => {
+            document.write(elm['latitude']+'<br>'+elm['longitude']+'<br>'+elm['name']+'<br>'+elm['description']+'<br>');            
+            //markers = L.marker([elm['coordinate']]).addTo(map).bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
+            markers = L.marker([elm['latitude'],elm['longitude']]).addTo(map).bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
+        });
+        //var marker = L.marker([53.694861544342544, -6.475607190321141]).addTo(map).bindPopup("<b>Brú na Bóinne</b><br>Newgrange is a 5,200 year old passage tomb");
+        //markers = L.marker([53.694715,-6.478072]).addTo(map).bindPopup("<b>Brú na Bóinne</b><br>Newgrange is a 5,200 year old passage tomb");
+        //markers = L.marker([53.7020057,-6.5312538]).addTo(map).bindPopup("<b>Brú na Bóinne2</b><br>Newgrange is a 5,200 year old passage tomb");
+        
+        var popup = L.popup();
+        function onMapClick(e) {
+            popup
+                .setLatLng(e.latlng)
+                .setContent("You clicked the map at " + e.latlng.toString())
+                .openOn(map);
+        }
+        map.on('click', onMapClick);
+        
     </script>
     
 
