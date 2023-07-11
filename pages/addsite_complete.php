@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join member complete</title>
+    <title>Add new site complete</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/external.css">
 </head>
@@ -36,7 +36,7 @@
         <div class="relative">
             <img src="../images/home1.jpg" alt="backimage">
             <div class="absolute">
-                <h1>You are our member now!</h1>
+                <h1>New site added!</h1>
                 <h2><a href="../pages/map.php">Let's explore our Map ⇒</a></h2>
             </div>
         </div>

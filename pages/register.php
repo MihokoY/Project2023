@@ -42,7 +42,7 @@ if (!empty($_POST)) {
 
     if (!isset($error)) {
         // Set data into database
-        $stmt = $db->prepare("insert into member(name, email, pass) value(?, ?, ?)");
+        $stmt = $db->prepare("INSERT INTO member(name, email, pass) VALUE(?, ?, ?)");
         $stmt->execute([$_POST['username'], $_POST['email'], $h_password]);
 
         // Move to register_complete page

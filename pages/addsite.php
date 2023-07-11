@@ -26,20 +26,34 @@ if (!empty($_POST)) {
     if ($_POST['description'] === "") {
         $error['description'] = "blank";
     }
-
-    // Image
-    if(!empty($_FILES)){
-        $filename = $_FILES['upload_image']['name'];
-        $uploaded_path = '../images/'.$filename;
-        $result = move_uploaded_file($_FILES['upload_image']['tmp_name'],$uploaded_path);
-
-    }
-    
+  
     if (!isset($error)) {
-        // Set data into database
-        $stmt = $db->prepare("insert into sites(latitude, longitude, name, description, image, user_id) value(?, ?, ?, ?, ?)");
-        $stmt->execute($latitude, $longitude, $_POST['sitename'], $_POST['description'], $filename, $_SESSION["id"]);
-
+        // With image
+        if(!empty($_FILES["upload_image"]["name"])){
+            $statusMsg = '';
+            //$allowTypes = array('jpg','png','jpeg','gif','pdf');
+            $filename = basename($_FILES['upload_image']['name']);
+            $uploadedPath = '../images/'.$filename;       
+            //$filetype = pathinfo($uploadedPath, PATHINFO_EXTENSION);
+            //if(in_array($allowTypes, $filetype)){
+            
+            if(move_uploaded_file($_FILES['upload_image']['tmp_name'], $uploadedPath)){
+                // Set data into database
+                $stmt1 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, image, user_id) VALUE(?, ?, ?, ?, ?, ?)");
+                $stmt1->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $filename, $_SESSION["id"]]);
+            }else{
+                $statusMsg = "File upload failed";
+            }           
+            //}
+            echo $statusMsg;
+            
+        // Without image
+        }else{
+            // Set data into database
+            $stmt2 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, user_id) value(?, ?, ?, ?, ?)");
+            $stmt2->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $_SESSION["id"]]);
+        }
+        
         // Move to addsite_complete page
         header('Location: addsite_complete.php');
         exit();
