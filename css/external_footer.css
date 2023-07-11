@@ -15,8 +15,7 @@ body {
 .container {
   width: auto;
   max-width: 680px;
-  /*padding: 0 15px;*/
-  background-color: black;
+  padding: 5px 0;
 }
 .container .text-muted {
   margin: 20px 0;

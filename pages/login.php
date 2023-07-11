@@ -33,7 +33,7 @@ if (!empty($_POST)) {
                     session_regenerate_id(true);
                     //Store login information in session variables
                     $_SESSION["loggedin"] = true;
-                    //$_SESSION["id"] = $row['id'];
+                    $_SESSION["id"] = $row['id'];
                     //$_SESSION["name"] =  $row['name'];
                     //Redirect to map page
                     header("location:map.php");
@@ -113,5 +113,9 @@ if (!empty($_POST)) {
             <p>Not our member? <a href="register.php">Join member now</a></p>
         </form>
     </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+            crossorigin="anonymous"></script>
 </body>
 </html>
