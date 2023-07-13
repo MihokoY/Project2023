@@ -4,7 +4,7 @@ html {
   min-height: 100%;
 }
 body {
-  margin-bottom: 35px;
+  margin-bottom: 45px;
 }
 .footer {
   position: absolute;
@@ -15,7 +15,7 @@ body {
 .container {
   width: auto;
   max-width: 680px;
-  padding: 5px 0;
+  padding: 0 15px;
 }
 .container .text-muted {
   margin: 20px 0;

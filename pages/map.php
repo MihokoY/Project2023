@@ -38,6 +38,7 @@ $json = json_encode($siteData);
           crossorigin="anonymous">
     <!--<link rel="stylesheet" href="../css/bootstrap.min.css">-->
     <link rel="stylesheet" href="../css/external.css">
+    <link rel="stylesheet" href="../css/external_footer.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
@@ -50,6 +51,8 @@ $json = json_encode($siteData);
         display: block;
         margin-left: auto;
         margin-right: auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
         width: 80%;
         height: 650px;
     }
@@ -163,6 +166,12 @@ $json = json_encode($siteData);
         map.on('click', onMapClick);
         
     </script>
+    
+    <footer class="footer bg-dark">
+        <div class="container text-center mt-2">
+            <p class="text-white title">©2023 Archaeology club, Inc. All Rights Reserved</p>
+        </div>
+    </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 

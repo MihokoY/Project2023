@@ -82,10 +82,10 @@ session_start();
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="images/home1.jpg" class="d-block w-50 mx-auto" alt="home3">
+                <img src="images/home3.jpg" class="d-block w-50 mx-auto" alt="home3">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5>Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
+                    <h5>Add new site</h5>
+                    <p>Let's add new site into our map! ⇒</p>
                 </div>
             </div>
         </div>
@@ -100,7 +100,7 @@ session_start();
     </div>
 
     <footer class="footer bg-dark">
-        <div class="container text-center">
+        <div class="container text-center mt-2">
             <p class="text-white title">©2023 Archaeology club, Inc. All Rights Reserved</p>
         </div>
     </footer>

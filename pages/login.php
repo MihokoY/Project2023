@@ -82,7 +82,7 @@ if (!empty($_POST)) {
             </div>
         </div>
     </nav>
-    <div class="container">
+    <div class="container mt-3">
         <h2 class="login_h2">Login</h2>
         <?php if (!empty($error["email"]) && $error['email'] === 'blank'): ?>
             <p class="error" style="color:red">*Please enter your email and password.</p>
@@ -109,7 +109,7 @@ if (!empty($_POST)) {
                 <label class="form-check-label" for="exampleCheck1">Remember</label>
             </div>
             -->
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-success">Login</button>
             <p>Not our member? <a href="register.php">Join member now</a></p>
         </form>
     </div>

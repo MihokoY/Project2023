@@ -26,3 +26,13 @@ body {
 .absolute a{
     color: inherit;
 }
+
+.absolute2 {
+    position: absolute;
+    top: 45%;
+    left: 33%;
+    color: black;
+}
+.absolute2 a{
+    color: inherit;
+}

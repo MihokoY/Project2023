@@ -99,7 +99,7 @@ if (!empty($_POST)) {
         </div>
     </nav>
     
-    <div class="container">
+    <div class="container mt-3">
         <h2 class="login_h2">Add new site</h2>
         <form id="additionForm" name="additionForm" action=""  method="POST" enctype="multipart/form-data">           
             <div class="mb-3">
@@ -127,9 +127,9 @@ if (!empty($_POST)) {
                     <p class="error" style="color:red"><?php $_FILES['upload_image']['error']?></p>
                 <?php endif ?>
             </div>
-            <button type="submit" id="add" name="add" class="btn btn-primary">Add</button>
-            <input type="reset" value="Reset" name="reset" class="btn btn-primary">
-            <input type="button" value="Back" name="back" class="btn btn-primary" onclick="location.href='../pages/map.php'">
+            <button type="submit" id="add" name="add" class="btn btn-success">Add</button>
+            <input type="reset" value="Reset" name="reset" class="btn btn-success">
+            <input type="button" value="Back" name="back" class="btn btn-success" onclick="location.href='../pages/map.php'">
         </form>
     </div>
     

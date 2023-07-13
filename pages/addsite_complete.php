@@ -34,10 +34,10 @@
     </nav>
     <div class="container">
         <div class="relative">
-            <img src="../images/home1.jpg" alt="backimage">
-            <div class="absolute">
-                <h1>New site added!</h1>
-                <h2><a href="../pages/map.php">Let's explore our Map ⇒</a></h2>
+            <img src="../images/home3_complete.jpg" alt="backimage">
+            <div class="absolute2">
+                <h1 class="text-white">New site added!</h1>
+                <h2 class="text-white"><a href="../pages/map.php">Let's explore our Map ⇒</a></h2>
             </div>
         </div>
     </div>

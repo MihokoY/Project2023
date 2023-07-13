@@ -90,7 +90,7 @@ if (!empty($_POST)) {
         </div>
     </nav>
     
-    <div class="container">
+    <div class="container mt-3">
         <h2 class="login_h2">Join member</h2>
         <form id="registerForm" name="registerForm" action=""  method="POST">           
             <div class="mb-3">
@@ -123,9 +123,9 @@ if (!empty($_POST)) {
                     Your password must be at least 8 characters, contain letters and numbers, and must not contain spaces, special characters, or emoji.
                 </div>
             </div>
-            <button type="submit" id="register" name="register" class="btn btn-primary">Register</button>
-            <input type="reset" value="Reset" name="reset" class="btn btn-primary">
-            <input type="button" value="Back" name="back" class="btn btn-primary" onclick="location.href='../index.php'">
+            <button type="submit" id="register" name="register" class="btn btn-success">Register</button>
+            <input type="reset" value="Reset" name="reset" class="btn btn-success">
+            <input type="button" value="Back" name="back" class="btn btn-success" onclick="location.href='../index.php'">
         </form>
     </div>
     
