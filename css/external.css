@@ -27,6 +27,7 @@ body {
     color: inherit;
 }
 
+/* addsite_complete page */
 .absolute2 {
     position: absolute;
     top: 45%;
@@ -35,4 +36,9 @@ body {
 }
 .absolute2 a{
     color: inherit;
+}
+
+/* Leaflet red marker for mymap page */
+.marker-red {
+  filter: hue-rotate(150deg);
 }

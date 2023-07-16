@@ -127,7 +127,7 @@ $json = json_encode($siteData);
         array.forEach(elm => {
             //document.write(elm['latitude']+'<br>'+elm['longitude']+'<br>'+elm['name']+'<br>'+elm['description']+'<br>');            
             //markers = L.marker([elm['coordinate']]).addTo(map).bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
-        //     
+        // Change the display with or without images    
         if(elm['image'] !== null){
                 markers = L.marker([elm['latitude'],elm['longitude']])
                         .addTo(map)

@@ -33,7 +33,7 @@ if (!empty($_POST)) {
                     session_regenerate_id(true);
                     //Store login information in session variables
                     $_SESSION["loggedin"] = true;
-                    $_SESSION["id"] = $row['id'];
+                    $_SESSION["user_id"] = $row['id'];
                     //$_SESSION["name"] =  $row['name'];
                     //Redirect to map page
                     header("location:map.php");

@@ -9,15 +9,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 // Connect to the database and execute query
 require('dbconnect.php');
-//$stmt = $db->prepare("SELECT name,description,X(coordinate),Y(coordinate) FROM site");
-$stmt = $db->prepare("SELECT latitude,longitude,name,description,image FROM sites INNER JOIN mymap ON sites.id = mymap.site_id WHERE mymap.user_id = ?");
-$stmt->bindValue(1, $_SESSION["id"]);
+$stmt = $db->prepare("SELECT * FROM sites INNER JOIN mymap ON sites.id = mymap.site_id WHERE mymap.user_id = ?");
+$stmt->bindValue(1, $_SESSION["user_id"]);
 $stmt->execute();
 
 // Initialize array
 $siteData=array();
 while($row=$stmt->fetch(PDO::FETCH_ASSOC)){ // Get results in the array
     $siteData[]=array(
+        'siteId'=>$row['site_id'],
         'latitude'=>$row['latitude'],
         'longitude'=>$row['longitude'],
         'name'=>$row['name'],
@@ -125,27 +125,79 @@ $json = json_encode($siteData);
         .setContent("<b>My map!</b>")
         .openOn(map);
     
+        // Create red marker
+        var redMarker = L.icon({
+            iconUrl: "https://esm.sh/leaflet@1.9.4/dist/images/marker-icon.png",
+            iconRetinaUrl: "https://esm.sh/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+            shadowUrl: "https://esm.sh/leaflet@1.9.4/dist/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            tooltipAnchor: [16, -28],
+            shadowSize: [41, 41],
+            className: "marker-red"
+        });
+    
+        // When the delete button is clicked
+        function onButtonClick() {
+            answer = confirm('Are you sure you want to remove this site from your map?');
+            if(answer === true){
+                if(!alert('Removed!')){
+                    window.location.reload();
+                }
+                
+                fetch('deleteFav.php');
+                //.then(response => response.json())
+                //.then(res => {
+                //    console.log(res);
+                //    alert(res);
+                //});
+            }
+        }
+        
+        // When the marker is clicked
+        function onMarkerClick(e){
+            //alert(e.target.id);
+            fetch('getSiteID.php', { // Destination
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(e.target.siteId.toString()) // Convert to json format and attach
+            });
+            //.then(response => response.json())
+            //.then(res => {
+            //    //console.log(res);
+            //    alert(res);
+            //});
+        }        
+        
         // Passing the array from PHP to JavaScript to show markers
         var array = <?php echo $json; ?>;
         var markers;
+        
+        // Show markers from the array
         array.forEach(elm => {
-            //document.write(elm['latitude']+'<br>'+elm['longitude']+'<br>'+elm['name']+'<br>'+elm['description']+'<br>');            
-            //markers = L.marker([elm['coordinate']]).addTo(map).bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
-        //     
-        if(elm['image'] !== null){
-                markers = L.marker([elm['latitude'],elm['longitude']])
-                        .addTo(map)
-                        .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']+"<br><img src=\"../images/"+ elm['image']+"\" width=\"200\" height=\"auto\">");
+         
+            // Change the display with or without images    
+            if(elm['image'] !== null){
+                    markers = L.marker([elm['latitude'],elm['longitude']], {icon: redMarker})
+                            .addTo(map)
+                            .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
+                            //.on( 'click', (e) =>  {  onMarkerClick(e); })
+                            .bindPopup("<b>"+ elm['name'] +"</b><br>" 
+                                        + elm['description']+"<br><img src=\"../images/"
+                                        + elm['image']+"\" width=\"200\" height=\"auto\"><br><br><input type=\"button\" value=\"Delete from my map\" name=\"deleteFav\" onclick=\"onButtonClick();\">");
+                    markers.siteId = elm['siteId']; //Use when this marker is clicked
             }else{
-                markers = L.marker([elm['latitude'],elm['longitude']])
-                        .addTo(map)
-                        .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
+                    markers = L.marker([elm['latitude'],elm['longitude']], {icon: redMarker})
+                            .addTo(map)
+                            .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
+                            .bindPopup("<b>"+ elm['name'] +"</b><br>" 
+                                        + elm['description']+"<br><br><input type=\"button\" value=\"Delete from my map\" name=\"deleteF\" onclick=\"onButtonClick();\">"); 
+                    markers.siteId = elm['siteId']; //Use when this marker is clicked
             }
         });
-        //var marker = L.marker([53.694861544342544, -6.475607190321141]).addTo(map).bindPopup("<b>Brú na Bóinne</b><br>Newgrange is a 5,200 year old passage tomb");
-        //markers = L.marker([53.694715,-6.478072]).addTo(map).bindPopup("<b>Brú na Bóinne</b><br>Newgrange is a 5,200 year old passage tomb");
-        //markers = L.marker([53.7020057,-6.5312538]).addTo(map).bindPopup("<b>Brú na Bóinne2</b><br>Newgrange is a 5,200 year old passage tomb");
-        
+ 
+         
         // Show coordinates of the clicked point
         var popup = L.popup();
         function onMapClick(e) {
@@ -156,7 +208,7 @@ $json = json_encode($siteData);
                 .openOn(map);
             
             // Pass coordinate value to PHP
-            fetch('coordinate.php', { // Destination
+            fetch('getCoordinate.php', { // Destination
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(e.latlng.toString()) // Convert to json format and attach
