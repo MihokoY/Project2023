@@ -125,6 +125,38 @@ $json2 = json_encode($siteIds);
             .setLatLng([54.769009, -10.042556])
             .setContent("<b>Let's explore map!</b>")
             .openOn(map);
+    
+            // When the add button is clicked
+            function onButtonClick() {
+                answer = confirm('Are you sure you want to add this site to your map?');
+                if(answer === true){
+                    if(!alert('Added!')){
+                        window.location.reload();
+                    }
+                    
+                    fetch('addFav.php');
+                    //.then(response => response.json())
+                    //.then(res => {
+                    //    console.log(res);
+                    ////    alert(res);
+                    //});
+                }
+            }
+
+            // When the marker is clicked
+            function onMarkerClick(e){
+                //alert(e.target.id);
+                fetch('getSiteID.php', { // Destination
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(e.target.siteId.toString()) // Convert to json format and attach
+                });
+                //.then(response => response.json())
+                //.then(res => {
+                //    //console.log(res);
+                //    alert(res);
+                //});
+            }
 
             // Passing the array from PHP to JavaScript to show markers
             var array = <?php echo $json; ?>;
@@ -143,7 +175,8 @@ $json2 = json_encode($siteIds);
                         if(elm['image'] !== null){
                             markers = L.marker([elm['latitude'],elm['longitude']])
                                     .addTo(map)
-                                    .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']+"<br><img src=\"../images/"+ elm['image']+"\" width=\"200\" height=\"auto\">");
+                                    .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']
+                                                +"<br><img src=\"../images/"+ elm['image']+"\" width=\"200\" height=\"auto\">");
                             return true;
                         }else{
                             markers = L.marker([elm['latitude'],elm['longitude']])
@@ -154,13 +187,16 @@ $json2 = json_encode($siteIds);
                         if(elm['image'] !== null){
                             markers = L.marker([elm['latitude'],elm['longitude']])
                                     .addTo(map)
-                                    .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']+"<br><img src=\"../images/"+ elm['image']+"\" width=\"200\" height=\"auto\"><br><br><input type=\"button\" value=\"Add to my map\" name=\"addF\" onclick=\"onButtonClick();\">");
-                            markers.siteId = elm['siteId']; //Use when this marker is clicked
+                                    .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
+                                    .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']
+                                                +"<br><img src=\"../images/" + elm['image']+"\" width=\"200\" height=\"auto\"><br><br><input type=\"button\" value=\"Add to my map\" name=\"addF\" onclick=\"onButtonClick();\">");
+                            markers.siteId = elm['id']; //Use when this marker is clicked
                         }else{
                             markers = L.marker([elm['latitude'],elm['longitude']])
                                     .addTo(map)
+                                    .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
                                     .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description'] +"<br><br><input type=\"button\" value=\"Add to my map\" name=\"addF\" onclick=\"onButtonClick();\">");
-                            markers.siteId = elm['siteId']; //Use when this marker is clicked
+                            markers.siteId = elm['id']; //Use when this marker is clicked
                         }
                     }
                 });
