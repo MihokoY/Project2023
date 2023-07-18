@@ -5,21 +5,23 @@ session_start();
 require('dbconnect.php');
 //$stmt = $db->prepare("SELECT name,description,X(coordinate),Y(coordinate) FROM site");
 $stmt = $db->prepare("SELECT * FROM sites");
-$stmt-> execute();
+$stmt->execute();
 
 // Initialize array
-$siteData=array();
-while($row=$stmt->fetch(PDO::FETCH_ASSOC)){ // Get results in the array
-    $siteData[]=array(
+$siteData = array();
+
+// Get results in the array
+while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ 
+    $siteData[] = array(
         //'coordinate'=>$row['coordinate'],
         //'latitude'=>$row['X(coordinate)'],
         //'longitude '=>$row['Y(coordinate)'],
-        'id'=>$row['id'],
-        'latitude'=>$row['latitude'],
-        'longitude'=>$row['longitude'],
-        'name'=>$row['name'],
-        'description'=>$row['description'],
-        'image'=>$row['image']
+        'id' => $row['id'],
+        'latitude' => $row['latitude'],
+        'longitude' => $row['longitude'],
+        'name' => $row['name'],
+        'description' => $row['description'],
+        'image' => $row['image']
     );
 }
 
@@ -27,19 +29,30 @@ while($row=$stmt->fetch(PDO::FETCH_ASSOC)){ // Get results in the array
 $json = json_encode($siteData);
 
 
-//
+//Initialize array
+$json2 = "[]";
+$json3 = "[]";
+
+// If user is logged in
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     $login_user_id = $_SESSION["user_id"];
-}
-$stmt2 = $db->prepare("SELECT * FROM mymap WHERE user_id = $login_user_id");
-$stmt2-> execute();
-$siteIds = array();
-while($row2=$stmt2->fetch(PDO::FETCH_ASSOC)){ // Get results in the array
-    $siteIds[]=array(
-        'site_id'=>$row2['site_id']
+
+    $stmt2 = $db->prepare("SELECT * FROM mymap WHERE user_id = $login_user_id");
+    $stmt2->execute();
+    $siteIds = array();
+    while($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)){ // Get results in the array
+        $siteIds[] = array(
+            'site_id' => $row2['site_id']
+        );
+    }
+    $json2 = json_encode($siteIds);
+    
+}else{
+    $param[] = array(
+        "member" => "no"
     );
+    $json3 = json_encode($param);
 }
-$json2 = json_encode($siteIds);
 
 ?>
 
@@ -129,17 +142,18 @@ $json2 = json_encode($siteIds);
             // When the add button is clicked
             function onButtonClick() {
                 answer = confirm('Are you sure you want to add this site to your map?');
-                if(answer === true){
-                    if(!alert('Added!')){
-                        window.location.reload();
-                    }
-                    
+                if(answer === true){                    
                     fetch('addFav.php');
                     //.then(response => response.json())
                     //.then(res => {
                     //    console.log(res);
                     ////    alert(res);
                     //});
+                    
+                    if(!alert('Added!')){
+                        window.location.reload();
+                    }
+                    
                 }
             }
 
@@ -161,46 +175,87 @@ $json2 = json_encode($siteIds);
             // Passing the array from PHP to JavaScript to show markers
             var array = <?php echo $json; ?>;
             var array2 = <?php echo $json2; ?>;
+            var array3 = <?php echo $json3; ?>;
             var markers;
-            array.forEach(elm => {
-                //document.write(elm['latitude']+'<br>'+elm['longitude']+'<br>'+elm['name']+'<br>'+elm['description']+'<br>');            
-                //markers = L.marker([elm['coordinate']]).addTo(map).bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
-                // Change the display with or without images    
-                
-                array2.some(elm2 => {
-                    document.write(elm['id']+'<br>');
-                    document.write(elm2['site_id']+'<br>');
-                    if(elm['id'] === elm2['site_id']){
-                    
-                        if(elm['image'] !== null){
-                            markers = L.marker([elm['latitude'],elm['longitude']])
-                                    .addTo(map)
-                                    .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']
-                                                +"<br><img src=\"../images/"+ elm['image']+"\" width=\"200\" height=\"auto\">");
-                            return true;
-                        }else{
-                            markers = L.marker([elm['latitude'],elm['longitude']])
-                                    .addTo(map)
-                                    .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
-                        }
+            
+            // Non member
+            if(array3.length !== 0 && array2.length === 0){
+                alert('if');
+                array.forEach(elm => {
+                    if(elm['image'] !== null){
+                        markers = L.marker([elm['latitude'],elm['longitude']])
+                                .addTo(map)
+                                .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']
+                                            +"<br><img src=\"../images/"+ elm['image']+"\" width=\"200\" height=\"auto\">");
+                        return true;
                     }else{
-                        if(elm['image'] !== null){
-                            markers = L.marker([elm['latitude'],elm['longitude']])
-                                    .addTo(map)
-                                    .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
-                                    .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']
-                                                +"<br><img src=\"../images/" + elm['image']+"\" width=\"200\" height=\"auto\"><br><br><input type=\"button\" value=\"Add to my map\" name=\"addF\" onclick=\"onButtonClick();\">");
-                            markers.siteId = elm['id']; //Use when this marker is clicked
-                        }else{
-                            markers = L.marker([elm['latitude'],elm['longitude']])
-                                    .addTo(map)
-                                    .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
-                                    .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description'] +"<br><br><input type=\"button\" value=\"Add to my map\" name=\"addF\" onclick=\"onButtonClick();\">");
-                            markers.siteId = elm['id']; //Use when this marker is clicked
-                        }
+                        markers = L.marker([elm['latitude'],elm['longitude']])
+                                .addTo(map)
+                                .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
                     }
                 });
-            });
+            // Member with some favorites
+            }else if(array2.length !== 0){
+                alert('else1');
+                array.forEach(elm => {
+                    //document.write(elm['latitude']+'<br>'+elm['longitude']+'<br>'+elm['name']+'<br>'+elm['description']+'<br>');            
+                    //markers = L.marker([elm['coordinate']]).addTo(map).bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
+                    // Change the display with or without images    
+
+                    array2.some(elm2 => {
+                        //document.write(elm['id']+'<br>');
+                        //document.write(elm2['site_id']+'<br>');
+                        if(elm['id'] === elm2['site_id']){
+
+                            if(elm['image'] !== null){
+                                markers = L.marker([elm['latitude'],elm['longitude']])
+                                        .addTo(map)
+                                        .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']
+                                                    +"<br><img src=\"../images/"+ elm['image']+"\" width=\"200\" height=\"auto\">");
+                                return true;
+                            }else{
+                                markers = L.marker([elm['latitude'],elm['longitude']])
+                                        .addTo(map)
+                                        .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
+                            }
+                        }else{
+                            if(elm['image'] !== null){
+                                markers = L.marker([elm['latitude'],elm['longitude']])
+                                        .addTo(map)
+                                        .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
+                                        .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']
+                                                    +"<br><img src=\"../images/" + elm['image']+"\" width=\"200\" height=\"auto\"><br><br><input type=\"button\" value=\"Add to my map\" name=\"addF\" onclick=\"onButtonClick();\">");
+                                markers.siteId = elm['id']; //Use when this marker is clicked
+                            }else{
+                                markers = L.marker([elm['latitude'],elm['longitude']])
+                                        .addTo(map)
+                                        .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
+                                        .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description'] +"<br><br><input type=\"button\" value=\"Add to my map\" name=\"addF\" onclick=\"onButtonClick();\">");
+                                markers.siteId = elm['id']; //Use when this marker is clicked
+                            }
+                        }
+                    });
+                });
+            // Member without favorite
+            }else{
+                alert('else2');
+                array.forEach(elm => {
+                    if(elm['image'] !== null){
+                        markers = L.marker([elm['latitude'],elm['longitude']])
+                                .addTo(map)
+                                .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
+                                .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']
+                                            +"<br><img src=\"../images/" + elm['image']+"\" width=\"200\" height=\"auto\"><br><br><input type=\"button\" value=\"Add to my map\" name=\"addF\" onclick=\"onButtonClick();\">");
+                        markers.siteId = elm['id']; //Use when this marker is clicked
+                    }else{
+                        markers = L.marker([elm['latitude'],elm['longitude']])
+                                .addTo(map)
+                                .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
+                                .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description'] +"<br><br><input type=\"button\" value=\"Add to my map\" name=\"addF\" onclick=\"onButtonClick();\">");
+                        markers.siteId = elm['id']; //Use when this marker is clicked
+                    }
+                });
+            }
             //var marker = L.marker([53.694861544342544, -6.475607190321141]).addTo(map).bindPopup("<b>Brú na Bóinne</b><br>Newgrange is a 5,200 year old passage tomb");
             //markers = L.marker([53.694715,-6.478072]).addTo(map).bindPopup("<b>Brú na Bóinne</b><br>Newgrange is a 5,200 year old passage tomb");
             //markers = L.marker([53.7020057,-6.5312538]).addTo(map).bindPopup("<b>Brú na Bóinne2</b><br>Newgrange is a 5,200 year old passage tomb");

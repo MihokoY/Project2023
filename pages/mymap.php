@@ -130,16 +130,16 @@ $json = json_encode($siteData);
             function onButtonClick() {
                 answer = confirm('Are you sure you want to remove this site from your map?');
                 if(answer === true){
-                    if(!alert('Removed!')){
-                        window.location.reload();
-                    }
-
                     fetch('deleteFav.php');
                     //.then(response => response.json())
                     //.then(res => {
                     //    console.log(res);
                     //    alert(res);
                     //});
+                    
+                    if(!alert('Removed!')){
+                        window.location.reload();
+                    }                  
                 }
             }
 

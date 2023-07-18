@@ -70,22 +70,22 @@ session_start();
                 <div class="carousel-item active">
                     <img src="images/home1.jpg" class="d-block w-50 mx-auto" alt="home1">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Explore the Map</h5>
-                        <p>Let's explore our map! ⇒</p>
+                        <h3>Explore the Map</h3>
+                        <h6><a href="pages/map.php">Let's explore our map! ⇒</a></h6>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <img src="images/home2.jpg" class="d-block w-50 mx-auto" alt="home2">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Join the member</h5>
-                        <p>Let's join the member and create our map together! ⇒</p>
+                        <h3>Join the member</h3>
+                        <h6><a href="pages/register.php">Let's join the member and create our map together! ⇒</a></h6>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <img src="images/home3.jpg" class="d-block w-50 mx-auto" alt="home3">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Add new site</h5>
-                        <p>Let's add new site into our map! ⇒</p>
+                        <h3>Add new site</h3>
+                        <h6><a href="pages/map.php">Let's add new site into our map! ⇒</a></h6>
                     </div>
                 </div>
             </div>
