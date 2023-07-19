@@ -86,7 +86,7 @@ if (!empty($_POST)) {
             </div>
         </nav>
         <div class="container mt-3">
-            <h2 class="login_h2">Login</h2>
+            <h2>Login</h2>
             <?php if (!empty($error["email"]) && $error['email'] === 'blank'): ?>
                 <p class="error" style="color:red">*Please enter your email and password.</p>
             <?php elseif (!empty($error["password"]) && $error['password'] === 'blank'): ?>

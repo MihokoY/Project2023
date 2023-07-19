@@ -26,10 +26,13 @@
                             <a class="nav-link" href="../pages/map.php">Explore map</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/register.php">Join member</a>
+                            <a class="nav-link" href="../pages/mymap.php">My map</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/login.php">Login</a>
+                            <a class="nav-link" href="../pages/mymap.php">My sites</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../pages/logout.php">Logout</a>
                         </li>
                     </ul>
                 </div>

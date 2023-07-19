@@ -14,15 +14,17 @@ $stmt->bindValue(1, $_SESSION["user_id"]);
 $stmt->execute();
 
 // Initialize array
-$siteData=array();
-while($row=$stmt->fetch(PDO::FETCH_ASSOC)){ // Get results in the array
-    $siteData[]=array(
-        'siteId'=>$row['site_id'],
-        'latitude'=>$row['latitude'],
-        'longitude'=>$row['longitude'],
-        'name'=>$row['name'],
-        'description'=>$row['description'],
-        'image'=>$row['image']
+$siteData = array();
+
+// Get results in the array
+while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ 
+    $siteData[] = array(
+        'siteId' => $row['site_id'],
+        'latitude' => $row['latitude'],
+        'longitude' => $row['longitude'],
+        'name' => $row['name'],
+        'description' => $row['description'],
+        'image' => $row['image']
     );
 }
 
@@ -57,7 +59,6 @@ $json = json_encode($siteData);
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <?php if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true): ?>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
@@ -70,28 +71,13 @@ $json = json_encode($siteData);
                             <a class="nav-link" href="../pages/mymap.php">My map</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="../pages/mysites.php">My sites</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="../pages/logout.php">Logout</a>
                         </li>
                     </ul>
                 </div>
-                <?php else: ?>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="../index.php">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../pages/map.php">Explore map</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../pages/register.php">Join member</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../pages/login.php">Login</a>
-                        </li>
-                    </ul>
-                </div>
-                <?php endif ?>
             </div>
         </nav>
 

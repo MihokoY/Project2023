@@ -40,7 +40,7 @@ if (!empty($_POST)) {
             if(move_uploaded_file($_FILES['upload_image']['tmp_name'], $uploadedPath)){
                 // Set data into database
                 $stmt1 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, image, user_id) VALUE(?, ?, ?, ?, ?, ?)");
-                $stmt1->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $filename, $_SESSION["id"]]);
+                $stmt1->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $filename, $_SESSION["user_id"]]);
             }else{
                 $statusMsg = "File upload failed";
             }           
@@ -51,7 +51,7 @@ if (!empty($_POST)) {
         }else{
             // Set data into database
             $stmt2 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, user_id) value(?, ?, ?, ?, ?)");
-            $stmt2->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $_SESSION["id"]]);
+            $stmt2->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $_SESSION["user_id"]]);
         }
         
         // Move to addsite_complete page
@@ -92,6 +92,9 @@ if (!empty($_POST)) {
                             <a class="nav-link" href="../pages/mymap.php">My map</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="../pages/mysites.php">My sites</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="../pages/logout.php">Logout</a>
                         </li>
                     </ul>
@@ -100,7 +103,7 @@ if (!empty($_POST)) {
         </nav>
 
         <div class="container mt-3">
-            <h2 class="login_h2">Add new site</h2>
+            <h2>Add new site</h2>
             <form id="additionForm" name="additionForm" action=""  method="POST" enctype="multipart/form-data">           
                 <div class="mb-3">
                     <label for="coordinate" class="form-label">Coordinate</label>

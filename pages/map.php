@@ -96,6 +96,9 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                             <a class="nav-link" href="../pages/mymap.php">My map</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="../pages/mysites.php">My sites</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="../pages/logout.php">Logout</a>
                         </li>
                     </ul>
@@ -180,7 +183,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
             
             // Non member
             if(array3.length !== 0 && array2.length === 0){
-                alert('if');
+                //alert('if');
                 array.forEach(elm => {
                     if(elm['image'] !== null){
                         markers = L.marker([elm['latitude'],elm['longitude']])
@@ -196,7 +199,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                 });
             // Member with some favorites
             }else if(array2.length !== 0){
-                alert('else1');
+                //alert('elseif');
                 array.forEach(elm => {
                     //document.write(elm['latitude']+'<br>'+elm['longitude']+'<br>'+elm['name']+'<br>'+elm['description']+'<br>');            
                     //markers = L.marker([elm['coordinate']]).addTo(map).bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
@@ -238,7 +241,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                 });
             // Member without favorite
             }else{
-                alert('else2');
+                //alert('else');
                 array.forEach(elm => {
                     if(elm['image'] !== null){
                         markers = L.marker([elm['latitude'],elm['longitude']])

@@ -40,7 +40,7 @@
                 <img src="../images/home2_complete.jpg" alt="backimage">
                 <div class="absolute3">
                     <h1 class="text-white">You are our member now!</h1>
-                    <h2 class="text-white"><a href="../pages/map.php">Let's explore our Map ⇒</a></h2>
+                    <h2 class="text-white"><a href="../pages/login.php">Let's explore our Map ⇒</a></h2>
                 </div>
             </div>
         </div>
