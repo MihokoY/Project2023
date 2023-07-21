@@ -16,24 +16,6 @@ $stmt->bindValue(1, $postSiteId);
 $stmt->execute();
 
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-// Initialize array
-//$siteData = array();
-
-// Get results in the array
-//while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ 
-//    $siteData[] = array(
-//        //'siteId' => $row['id'],
-//        'latitude' => $row['latitude'],
-//        'longitude' => $row['longitude'],
-//        'name' => $row['name'],
-//        'description' => $row['description'],
-//        'image' => $row['image']
-//    );
-//}
-
-// Convert PHP array to JSON formatted data
-//$json = json_encode($siteData);
 
 // When the change button is clicked
 //if (!empty($_POST)) {
@@ -84,7 +66,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Change site</title>
+        <title>Edit site</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
               integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
               crossorigin="anonymous">  
@@ -121,7 +103,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
         </nav>
 
         <div class="container mt-3">
-            <h2>Change site</h2>
+            <h2>Edit site</h2>
             <form id="changeForm" name="changeForm" action=""  method="POST" enctype="multipart/form-data">           
                 <div class="mb-3">
                     <label for="coordinate" class="form-label">Coordinate</label>
@@ -145,17 +127,49 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 <div class="mb-3">
                     <input type="file" name="upload_image">
                     <?php if (!empty($row['image'])): ?>
-                    <p>*If you don't upload it, the image won't change. Registered image name: <?php echo $row['image']; ?></p>
+                    <p>*If you don't upload an image, registered image won't change. Registered image name: <?php echo $row['image']; ?></p>
                     <?php endif ?>
                     <?php if (!empty($_FILES['upload_image']['error'])): ?>
                     <p class="error" style="color:red"><?php $_FILES['upload_image']['error']?></p>
                     <?php endif ?>
                 </div>
+                <input type="hidden" name="siteId" id="siteId" value="<?php echo $row["id"] ?>">
                 <input type="submit" value="Change" name="change" class="btn btn-success">
+                <input type="button" value="Delete" name="delete" class="btn btn-success" onclick="onDeleteButtonClick();">
                 <input type="reset" value="Reset" name="reset" class="btn btn-success">
                 <input type="button" value="Back" name="back" class="btn btn-success" onclick="location.href='../pages/mysites.php'">
             </form>
         </div>
+    
+    <script>
+        function onDeleteButtonClick() {
+            // Get site ID from HTML using hidden type
+            var siteId = document.getElementById("siteId").value;
+            //alert(siteId);
+            
+            // Show the message to confirm deletion
+            answer = confirm('Are you sure you want to delete this site?');
+            
+            // If the user click "OK"
+            if(answer === true){
+                // Call deleteSite.php with site ID
+                fetch('deleteSite.php', { // Destination
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(siteId.toString()) // Convert to json format and attach
+                });
+                //.then(response => response.json()) // Receive the returned response by json and pass it to the next then
+                //.then(res => {
+                //    console.log(res); // Returned data
+                //})
+                
+                // Show the message and transition to mysites page
+                if(!alert('Deleted!')){
+                    location.href = "../pages/mysites.php";
+                }   
+            }
+        }
+    </script>
 
         <footer class="footer bg-dark">
             <div class="container text-center mt-1">

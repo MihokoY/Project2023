@@ -79,6 +79,16 @@ $stmt->execute();
                 </div>
             </div>
         </div>
+        <?php if(empty($stmt)): ?>
+        <div class="container my-3">
+            <div class="row">
+                <div class="col-12">
+                    <h5>No site</h5>
+                    <h6><a href="../pages/map.php" class="link-dark">Let's add new site ⇒</a></h6>
+                </div>
+            </div>
+        </div>
+        <?php endif ?>
         <?php while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ ?>
         <div class="container py-3 mb-2 border border-secondary border-2">
             <div class="row">
@@ -111,20 +121,53 @@ $stmt->execute();
             </div>
             <div class="row">              
                 <div class="col-12 text-end mt-3">
-                    <form action="changesite.php" method="post">
-                        <input type="hidden" name="siteId" value="<?php echo $row['id'] ?>">
-                        <input type="submit" name="change" value="Change" class="btn btn-success">
-                        <input type="submit" name="delete" value="Delete" class="btn btn-success">
-                        <!--
-                        <input type="button" value="Change" name="change" class="btn btn-success" onclick="location.href='../pages/changesite.php'">
-                        <input type="button" value="Delete" name="delete" class="btn btn-success" onclick="onDeleteButtonClick();">
-                        -->
+                    <!--<form name="mysitesForm" method="post">-->
+                    <form name="mysitesForm" action="editsite.php" method="post">
+                        <input type="hidden" name="siteId" id="siteId" value="<?php echo $row["id"] ?>">
+                        <!--<input type="submit" name="change" value="Change" class="btn btn-success" onclick="location.href='../pages/editsite.php'">-->
+                        <input type="submit" name="edit" value="Edit" class="btn btn-success">
+                        <!--<input type="button" name="delete" value="Delete" class="btn btn-success" onclick="onDeleteButtonClick();">-->
+                        <!--<input type="submit" name="delete" value="Delete" class="btn btn-success">-->
                     </form>
                 </div>
             </div>
         </div>
         <?php } ?>
-
+        
+        <script>
+//            document.mysitesForm.change.addEventListener('click', function() {
+//                var result = window.confirm('Are you sure you want to delete this site?');
+//                if( result ) {
+//                    alert(document.getElementById("siteId").value);
+//                }else{
+//                    alert(document.getElementById("siteId").value);
+//                }
+//            }
+//            function onDeleteButtonClick() {
+//                //var siteId = document.mysitesForm.siteId.value;
+//                //var siteId = document.getElementById('siteId').value;
+//                alert(document.getElementById("siteId").value);
+//                answer = confirm('Are you sure you want to delete this site?');
+//                if(answer === true){ 
+//
+//                    //fetch('deleteSite.php');
+//                    fetch('deleteSite.php', { // Destination
+//                        method: 'POST',
+//                        headers: { 'Content-Type': 'application/json' },
+//                        body: JSON.stringify(siteId.toString()) // Convert to json format and attach
+//                    });
+//                    //.then(response => response.json()) // Receive the returned response by json and pass it to the next then
+//                    //.then(res => {
+//                    //    console.log(res); // Returned data
+//                    //})
+//                    
+//                    if(!alert('Deleted!')){
+//                        window.location.reload();
+//                    }
+//                    
+//                }
+//            }
+        </script>
 
         <footer class="footer bg-dark">
             <div class="container text-center mt-2">
