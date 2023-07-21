@@ -17,48 +17,6 @@ $stmt->execute();
 
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// When the change button is clicked
-//if (!empty($_POST)) {
-//    // Blank check
-//    if ($_POST['sitename'] === "") {
-//        $error['sitename'] = "blank";
-//    }
-//    if ($_POST['description'] === "") {
-//        $error['description'] = "blank";
-//    }
-//  
-//    if (!isset($error)) {
-//        // With image
-//        if(!empty($_FILES["upload_image"]["name"])){
-//            $statusMsg = '';
-//            //$allowTypes = array('jpg','png','jpeg','gif','pdf');
-//            $filename = basename($_FILES['upload_image']['name']);
-//            $uploadedPath = '../images/'.$filename;       
-//            //$filetype = pathinfo($uploadedPath, PATHINFO_EXTENSION);
-//            //if(in_array($allowTypes, $filetype)){
-//            
-//            if(move_uploaded_file($_FILES['upload_image']['tmp_name'], $uploadedPath)){
-//                // Set data into database
-//                $stmt1 = $db->prepare("UPDATE sites SET latitude = ?, longitude = ? , name = ?, description = ?, image = ? WHERE id = $postSiteId");
-//                $stmt1->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $filename, $postSiteId]);
-//            }else{
-//                $statusMsg = "File upload failed";
-//            }           
-//            //}
-//            echo $statusMsg;
-//            
-//        // Without image
-//        }else{
-//            // Set data into database
-//            $stmt2 = $db->prepare("UPDATE sites latitude = ?, longitude = ? , name = ?, description = ? WHERE id = $postSiteId");
-//            $stmt2->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $postSiteId]);
-//        }
-//        
-//        // Move to addsite_complete page
-//        header('Location: addsite_complete.php');
-//        exit();
-//    }
-//}
 ?>
 
 <!DOCTYPE html>
@@ -104,7 +62,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         <div class="container mt-3">
             <h2>Edit site</h2>
-            <form id="changeForm" name="changeForm" action=""  method="POST" enctype="multipart/form-data">           
+            <form id="changeForm" name="changeForm" action="changeSite.php" onsubmit="return onChangeButtonClick()" method="POST" enctype="multipart/form-data">           
                 <div class="mb-3">
                     <label for="coordinate" class="form-label">Coordinate</label>
                     <!--<p><b>Coordinate: <?php echo htmlspecialchars($_SESSION["coordinate"], ENT_QUOTES);?></b></p>-->
@@ -142,13 +100,18 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
         </div>
     
     <script>
+        function onChangeButtonClick() {
+            var answer = confirm('Are you sure you want to change this site?');
+            return answer;
+        }
+        
         function onDeleteButtonClick() {
             // Get site ID from HTML using hidden type
             var siteId = document.getElementById("siteId").value;
             //alert(siteId);
             
             // Show the message to confirm deletion
-            answer = confirm('Are you sure you want to delete this site?');
+            var answer = confirm('Are you sure you want to delete this site?');
             
             // If the user click "OK"
             if(answer === true){

@@ -1,15 +1,15 @@
 <?php
 session_start();
 
-// Receive coordinate value
+// Receive site ID value
 $raw = file_get_contents('php://input'); // Receive POST data
 $siteId = json_decode($raw); // Convert JSON format to PHP variable
 
+// Delete the site from sites table
 require('dbconnect.php');
 $stmt = $db->prepare("DELETE FROM sites WHERE id = ?");
 $stmt->bindValue(1, $siteId);
 $stmt->execute();
-
 
 // Return to JavaScript
 //$favData=array();

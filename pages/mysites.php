@@ -13,21 +13,6 @@ $stmt = $db->prepare("SELECT * FROM sites WHERE user_id = ?");
 $stmt->bindValue(1, $_SESSION["user_id"]);
 $stmt->execute();
 
-// Initialize array
-//$siteData = array();
-//while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ // Get results in the array
-//    $siteData[] = array(
-//        //'siteId' => $row['id'],
-//        'latitude' => $row['latitude'],
-//        'longitude' => $row['longitude'],
-//        'name' => $row['name'],
-//        'description' => $row['description'],
-//        'image' => $row['image']
-//    );
-//}
-
-// Convert PHP array to JSON formatted data
-//$json = json_encode($siteData);
 ?>
 
 
@@ -79,6 +64,8 @@ $stmt->execute();
                 </div>
             </div>
         </div>
+        
+        <!-- If the user doesn't have any registered site -->
         <?php if(empty($stmt)): ?>
         <div class="container my-3">
             <div class="row">
@@ -89,6 +76,8 @@ $stmt->execute();
             </div>
         </div>
         <?php endif ?>
+        
+        <!-- Display sites -->
         <?php while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ ?>
         <div class="container py-3 mb-2 border border-secondary border-2">
             <div class="row">
@@ -121,7 +110,6 @@ $stmt->execute();
             </div>
             <div class="row">              
                 <div class="col-12 text-end mt-3">
-                    <!--<form name="mysitesForm" method="post">-->
                     <form name="mysitesForm" action="editsite.php" method="post">
                         <input type="hidden" name="siteId" id="siteId" value="<?php echo $row["id"] ?>">
                         <!--<input type="submit" name="change" value="Change" class="btn btn-success" onclick="location.href='../pages/editsite.php'">-->
@@ -133,41 +121,6 @@ $stmt->execute();
             </div>
         </div>
         <?php } ?>
-        
-        <script>
-//            document.mysitesForm.change.addEventListener('click', function() {
-//                var result = window.confirm('Are you sure you want to delete this site?');
-//                if( result ) {
-//                    alert(document.getElementById("siteId").value);
-//                }else{
-//                    alert(document.getElementById("siteId").value);
-//                }
-//            }
-//            function onDeleteButtonClick() {
-//                //var siteId = document.mysitesForm.siteId.value;
-//                //var siteId = document.getElementById('siteId').value;
-//                alert(document.getElementById("siteId").value);
-//                answer = confirm('Are you sure you want to delete this site?');
-//                if(answer === true){ 
-//
-//                    //fetch('deleteSite.php');
-//                    fetch('deleteSite.php', { // Destination
-//                        method: 'POST',
-//                        headers: { 'Content-Type': 'application/json' },
-//                        body: JSON.stringify(siteId.toString()) // Convert to json format and attach
-//                    });
-//                    //.then(response => response.json()) // Receive the returned response by json and pass it to the next then
-//                    //.then(res => {
-//                    //    console.log(res); // Returned data
-//                    //})
-//                    
-//                    if(!alert('Deleted!')){
-//                        window.location.reload();
-//                    }
-//                    
-//                }
-//            }
-        </script>
 
         <footer class="footer bg-dark">
             <div class="container text-center mt-2">
