@@ -5,7 +5,7 @@ $postSiteId = $_POST['siteId'];
 
 //If the user is not logged in, redirect to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: ../pages/login.php");
+    header('Location: ../pages/login.php');
     exit;
 }
         
@@ -70,17 +70,11 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 </div>
                 <div class="mb-3">
                     <label for="sitename" class="form-label">Site name</label>
-                    <input type="text" class="form-control" id="sitename" name="sitename" value="<?php echo $row['name']; ?>">
-                    <?php if (!empty($error["sitename"]) && $error['sitename'] === 'blank'): ?>
-                        <p class="error" style="color:red">*Please enter the site name.</p>
-                    <?php endif ?>
+                    <input type="text" class="form-control" id="sitename" name="sitename" value="<?php echo $row['name']; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" name="description" rows="5"><?php echo $row['description']; ?></textarea>
-                    <?php if (!empty($error["description"]) && $error['description'] === 'blank'): ?>
-                        <p class="error" style="color:red">*Please enter the description.</p>
-                    <?php endif ?>
+                    <textarea class="form-control" id="description" name="description" rows="5" required><?php echo $row['description']; ?></textarea>
                 </div>
                 <div class="mb-3">
                     <input type="file" name="upload_image">

@@ -6,7 +6,7 @@ session_start();
 
 // If the user is logged in, redirect to map page
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: map.php");
+    header('Location: map.php');
     exit;
 }
 
@@ -36,7 +36,7 @@ if (!empty($_POST)) {
                     $_SESSION["user_id"] = $row['id'];
                     //$_SESSION["name"] =  $row['name'];
                     //Redirect to map page
-                    header("location:map.php");
+                    header('Location:map.php');
                     exit();
                 } else {
                     $error['password'] = "invalid";

@@ -3,8 +3,13 @@ session_start();
 
 //If the user is not logged in, redirect to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: ../pages/login.php");
+    header('Location: ../pages/login.php');
     exit;
+}
+
+if(isset($_SESSION["fromChangeSite"]) && $_SESSION["fromChangeSite"] === true){
+    echo "<script>alert('Changed!');</script>";
+    $_SESSION["fromChangeSite"] = false;
 }
 
 // Connect to the database and execute query

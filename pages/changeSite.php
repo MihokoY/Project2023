@@ -9,14 +9,14 @@ require('dbconnect.php');
 // When the change button is clicked
 if (!empty($_POST)) {
     // Blank check
-    if ($_POST['sitename'] === "") {
-        $error['sitename'] = "blank";
-    }
-    if ($_POST['description'] === "") {
-        $error['description'] = "blank";
-    }
+    //if ($_POST['sitename'] === "") {
+    //    $error['sitename'] = "blank";
+    //}
+    //if ($_POST['description'] === "") {
+    //    $error['description'] = "blank";
+    //}
   
-    if (!isset($error)) {
+    //if (!isset($error)) {
         // With image
         if(!empty($_FILES["upload_image"]["name"])){
             $statusMsg = '';
@@ -32,8 +32,7 @@ if (!empty($_POST)) {
                 $stmt1->execute([$_POST['sitename'], $_POST['description'], $filename]);
             }else{
                 $statusMsg = "File upload failed";
-            }           
-            //}
+            }
             echo $statusMsg;
             
         // Without image
@@ -42,16 +41,16 @@ if (!empty($_POST)) {
             $stmt2 = $db->prepare("UPDATE sites SET name = ?, description = ? WHERE id = $postSiteId");
             $stmt2->execute([$_POST['sitename'], $_POST['description']]);
         }
-
+        
+        // Show message
+        //echo "<script>alert('Changed!');</script>";
+        $_SESSION["fromChangeSite"] = true;
+        
         // Move to mysites page
         header('Location: mysites.php');
         
-        // Show message
-        //$alert = "<script>alert('Changed!');</script>";
-        //echo $alert;
-        
-        exit();
-    }
+        //exit();
+    //}
 }
 
 ?>
