@@ -1,4 +1,5 @@
 <?php
+// Start session processing
 session_start();
 
 // Connect to the database and execute query
@@ -77,12 +78,14 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
          crossorigin=""></script>    
     </head>
     <body>
+        <!-- Top menu -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand title" href="#">Archaeological map in Ireland</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <!-- Menu for logged in users -->
                 <?php if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true): ?>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
@@ -103,6 +106,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                         </li>
                     </ul>
                 </div>
+                <!-- Menu for not logged in users -->
                 <?php else: ?>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
@@ -130,9 +134,13 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
             // Initial display coordinates
             var map = L.map('map').setView([53.4494762, -7.5029786], 7);
 
+            // Set max bouds
+            var Bounds = [[55.640399, -11.272559], [51.082822, -5.073562]];
+                       
             // Add a OpenStreetMap tile layer
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
+                maxBounds: [[55.640399, -11.272559], [51.082822, -5.073562]],
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
 
@@ -197,7 +205,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                                 .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
                     }
                 });
-            // Member with some favorites
+            // Member with some favourites
             }else if(array2.length !== 0){
                 //alert('elseif');
                 array.forEach(elm => {
@@ -239,7 +247,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                         }
                     });
                 });
-            // Member without favorite
+            // Member without favourite
             }else{
                 //alert('else');
                 array.forEach(elm => {
@@ -288,6 +296,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 
         </script>
 
+        <!-- Footer -->
         <footer class="footer bg-dark">
             <div class="container text-center mt-2">
                 <p class="text-white title">©2023 Archaeology club, Inc. All Rights Reserved</p>

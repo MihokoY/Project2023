@@ -1,4 +1,5 @@
 <?php
+// Start session processing
 session_start();
 
 //If the user is not logged in, redirect to login page
@@ -34,6 +35,7 @@ $stmt->execute();
         <link rel="stylesheet" href="../css/external_footer.css">
     </head>
     <body>
+        <!-- Top menu -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand title" href="#">Archaeological map in Ireland</a>
@@ -127,6 +129,7 @@ $stmt->execute();
         </div>
         <?php } ?>
 
+        <!-- Footer -->
         <footer class="footer bg-dark">
             <div class="container text-center mt-2">
                 <p class="text-white title">©2023 Archaeology club, Inc. All Rights Reserved</p>

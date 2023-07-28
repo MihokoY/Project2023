@@ -1,4 +1,5 @@
 <?php
+// Start session processing
 session_start();
 
 require('dbconnect.php');

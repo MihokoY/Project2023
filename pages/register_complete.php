@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="../css/external_footer.css">
     </head>
     <body>
+        <!-- Top menu -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand title" href="#">Archaeological map in Ireland</a>
@@ -35,16 +36,19 @@
                 </div>
             </div>
         </nav>
-        <div class="container">
+        
+        <!-- Completion message display part -->
+        <div class="container mt-2">
             <div class="relative">
                 <img src="../images/home2_complete.jpg" alt="backimage">
                 <div class="absolute3">
                     <h1 class="text-white">You are our member now!</h1>
-                    <h2 class="text-white"><a href="../pages/login.php">Let's explore our Map ⇒</a></h2>
+                    <h2 class="text-white"><a href="../pages/login.php">Let's login and explore our map ⇒</a></h2>
                 </div>
             </div>
         </div>
 
+        <!-- Footer -->
         <footer class="footer bg-dark">
             <div class="container text-center mt-1">
                 <p class="text-white title">©2023 Archaeology club, Inc. All Rights Reserved</p>

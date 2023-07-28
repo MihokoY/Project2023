@@ -1,4 +1,5 @@
 <?php
+// Start session processing
 session_start();
 
 //If the user is not logged in, redirect to login page
@@ -20,14 +21,14 @@ require('dbconnect.php');
 
 if (!empty($_POST)) {
     // Blank check
-    if ($_POST['sitename'] === "") {
-        $error['sitename'] = "blank";
-    }
-    if ($_POST['description'] === "") {
-        $error['description'] = "blank";
-    }
+    //if ($_POST['sitename'] === "") {
+    //    $error['sitename'] = "blank";
+    //}
+    //if ($_POST['description'] === "") {
+    //    $error['description'] = "blank";
+    //}
   
-    if (!isset($error)) {
+    //if (!isset($error)) {
         // With image
         if(!empty($_FILES["upload_image"]["name"])){
             $statusMsg = '';
@@ -57,7 +58,7 @@ if (!empty($_POST)) {
         // Move to addsite_complete page
         header('Location: addsite_complete.php');
         exit();
-    }
+    //}
 }
 ?>
 
@@ -74,6 +75,7 @@ if (!empty($_POST)) {
         <link rel="stylesheet" href="../css/external_footer.css">
     </head>
     <body>
+        <!-- Top menu -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand title" href="#">Archaeological map in Ireland</a>
@@ -112,14 +114,14 @@ if (!empty($_POST)) {
                 </div>
                 <div class="mb-3">
                     <label for="sitename" class="form-label">Site name</label>
-                    <input type="text" class="form-control" id="sitename" name="sitename">
+                    <input type="text" class="form-control" id="sitename" name="sitename" required>
                     <?php if (!empty($error["sitename"]) && $error['sitename'] === 'blank'): ?>
                         <p class="error" style="color:red">*Please enter the site name.</p>
                     <?php endif ?>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" name="description" rows="5"></textarea>
+                    <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
                     <?php if (!empty($error["description"]) && $error['description'] === 'blank'): ?>
                         <p class="error" style="color:red">*Please enter the description.</p>
                     <?php endif ?>
@@ -136,6 +138,7 @@ if (!empty($_POST)) {
             </form>
         </div>
 
+        <!-- Footer -->
         <footer class="footer bg-dark">
             <div class="container text-center mt-1">
                 <p class="text-white title">©2023 Archaeology club, Inc. All Rights Reserved</p>

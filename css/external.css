@@ -49,6 +49,17 @@ body {
     color: inherit;
 }
 
+/* register_complete page */
+.absolute4 {
+    position: absolute;
+    top: 45%;
+    left: 35%;
+    color: black;
+}
+.absolute4 a{
+    color: inherit;
+}
+
 .carousel-item {
   position: relative;
 }

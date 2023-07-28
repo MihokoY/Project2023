@@ -1,4 +1,5 @@
 <?php
+// Start session processing
 session_start();
 ?>
 
@@ -16,12 +17,14 @@ session_start();
         <link rel="stylesheet" href="css/external_footer.css">
     </head>
     <body>
+        <!-- Top menu -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand title" href="#">Archaeological map in Ireland</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <!-- Menu for logged in users -->
                 <?php if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true): ?>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
@@ -42,6 +45,7 @@ session_start();
                         </li>
                     </ul>
                 </div>
+                <!-- Menu for not logged in users -->
                 <?php else: ?>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
@@ -62,7 +66,8 @@ session_start();
                 <?php endif ?>
             </div>
         </nav>
-
+        
+        <!-- Slideshow part -->
         <div id="carouselExampleCaptions" class="carousel slide mt-2" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -102,6 +107,7 @@ session_start();
             </button>
         </div>
 
+        <!-- Footer -->
         <footer class="footer bg-dark">
             <div class="container text-center mt-1">
                 <p class="text-white title">©2023 Archaeology club, Inc. All Rights Reserved</p>

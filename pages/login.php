@@ -1,49 +1,41 @@
 <?php
 require_once "dbconnect.php";
 
-//Start session
+// Start session processing
 session_start();
 
-// If the user is logged in, redirect to map page
+// If the user is logged in, redirect to the map page
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header('Location: map.php');
     exit;
 }
 
+// When the Login button is clicked
 if (!empty($_POST)) {
-    // Blank check
-    if ($_POST['email'] === "") {
-        $error['email']  = "blank";
-    }
-    if ($_POST['password'] === "") {
-        $error['password']  = "blank";
-    }
-    
-    if (!isset($error)) {
-        //Get the relevant user information from email
-        $stmt = $db->prepare('select * from member where email = ?');
-        //$stmt->bindValue('email',$datas['email'],PDO::PARAM_INT);
-        $stmt->execute([$_POST['email']]);
+    // Get the relevant user information from email
+    $stmt = $db->prepare('select * from member where email = ?');
+    $stmt->execute([$_POST['email']]);
 
-            //If there is user information, it is stored in a variable
-            if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-                //Check if the password is correct
-                if (password_verify($_POST['password'],$row['pass'])) {
-                    //Set a new session ID
-                    session_regenerate_id(true);
-                    //Store login information in session variables
-                    $_SESSION["loggedin"] = true;
-                    $_SESSION["user_id"] = $row['id'];
-                    //$_SESSION["name"] =  $row['name'];
-                    //Redirect to map page
-                    header('Location:map.php');
-                    exit();
-                } else {
-                    $error['password'] = "invalid";
-                }
-            }else {
-                $error['email'] = "invalid";
-            }
+    // Check if there is user information
+    if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        // Check if the password is correct
+        if (password_verify($_POST['password'],$row['pass'])) {
+            // Set a new session ID
+            session_regenerate_id(true);
+            // Store login information in session variables
+            $_SESSION["loggedin"] = true;
+            $_SESSION["user_id"] = $row['id'];
+            // Transition to Map page
+            header('Location:map.php');
+            exit();
+            
+        // If the password is incorrect, put "invalid" in the variable for errors
+        } else {
+            $error['password'] = "invalid";
+        }
+    // If there is no user information, put "invalid" in the variable for errors
+    }else {
+        $error['email'] = "invalid";
     }
 }
 ?>
@@ -61,6 +53,7 @@ if (!empty($_POST)) {
         <link rel="stylesheet" href="../css/external_footer.css">
     </head>
     <body>
+        <!-- Top menu -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand title" href="#">Archaeological map in Ireland</a>
@@ -85,38 +78,31 @@ if (!empty($_POST)) {
                 </div>
             </div>
         </nav>
+        
+        <!-- Login form part-->
         <div class="container mt-3">
             <h2>Login</h2>
-            <?php if (!empty($error["email"]) && $error['email'] === 'blank'): ?>
-                <p class="error" style="color:red">*Please enter your email and password.</p>
-            <?php elseif (!empty($error["password"]) && $error['password'] === 'blank'): ?>
-                <p class="error" style="color:red">Invalid username or password.</p>
-            <?php elseif (!empty($error["email"]) && $error['email'] === 'invalid'): ?>
+            <!-- If the email or password is incorrect, show the error message -->
+            <?php if (!empty($error["email"]) && $error['email'] === 'invalid'): ?>
                 <p class="error" style="color:red">*Invalid username or password.</p>
             <?php elseif (!empty($error["password"]) && $error['password'] === 'invalid'): ?>
-                <p class="error" style="color:red">*Invalid username or password.</p>
+                <p class="error" style="color:red">*Invalid username or password.</p>    
             <?php endif ?>
             <form id="loginForm" name="loginForm" action="" method="post">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="text" class="form-control" id="email" name="email">
+                    <input type="text" class="form-control" id="email" name="email" required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password">
+                    <input type="password" class="form-control" id="password" name="password" required>
                 </div>
-
-                <!--
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Remember</label>
-                </div>
-                -->
                 <button type="submit" class="btn btn-success">Login</button>
                 <p>Not our member? <a href="register.php">Join member now</a></p>
             </form>
         </div>
 
+        <!-- Footer -->
         <footer class="footer bg-dark">
             <div class="container text-center mt-1">
                 <p class="text-white title">©2023 Archaeology club, Inc. All Rights Reserved</p>

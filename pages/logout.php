@@ -1,4 +1,5 @@
 <?php
+// Start session processing
 session_start();
 
 //Delete session variables
@@ -7,5 +8,7 @@ $_SESSION = array();
 session_destroy();
 
 //Redirect to home page
-header('Location: ../index.php');
+header('Location: ../pages/loggedout.php');
 exit;
+
+?>

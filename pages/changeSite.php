@@ -1,5 +1,6 @@
 <!--<script> alert('changeSite.php'); </script>-->
 <?php
+// Start session processing
 session_start();
 $postSiteId = $_POST['siteId'];
 

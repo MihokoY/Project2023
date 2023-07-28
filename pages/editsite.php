@@ -1,4 +1,5 @@
 <?php
+// Start session processing
 session_start();
 //echo $_POST['siteId'];
 $postSiteId = $_POST['siteId'];
@@ -32,6 +33,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
         <link rel="stylesheet" href="../css/external_footer.css">
     </head>
     <body>
+        <!-- Top menu -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand title" href="#">Archaeological map in Ireland</a>
@@ -93,41 +95,42 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             </form>
         </div>
     
-    <script>
-        function onChangeButtonClick() {
-            var answer = confirm('Are you sure you want to change this site?');
-            return answer;
-        }
-        
-        function onDeleteButtonClick() {
-            // Get site ID from HTML using hidden type
-            var siteId = document.getElementById("siteId").value;
-            //alert(siteId);
-            
-            // Show the message to confirm deletion
-            var answer = confirm('Are you sure you want to delete this site?');
-            
-            // If the user click "OK"
-            if(answer === true){
-                // Call deleteSite.php with site ID
-                fetch('deleteSite.php', { // Destination
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(siteId.toString()) // Convert to json format and attach
-                });
-                //.then(response => response.json()) // Receive the returned response by json and pass it to the next then
-                //.then(res => {
-                //    console.log(res); // Returned data
-                //})
-                
-                // Show the message and transition to mysites page
-                if(!alert('Deleted!')){
-                    location.href = "../pages/mysites.php";
-                }   
+        <script>
+            function onChangeButtonClick() {
+                var answer = confirm('Are you sure you want to change this site?');
+                return answer;
             }
-        }
-    </script>
 
+            function onDeleteButtonClick() {
+                // Get site ID from HTML using hidden type
+                var siteId = document.getElementById("siteId").value;
+                //alert(siteId);
+
+                // Show the message to confirm deletion
+                var answer = confirm('Are you sure you want to delete this site?');
+
+                // If the user click "OK"
+                if(answer === true){
+                    // Call deleteSite.php with site ID
+                    fetch('deleteSite.php', { // Destination
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(siteId.toString()) // Convert to json format and attach
+                    });
+                    //.then(response => response.json()) // Receive the returned response by json and pass it to the next then
+                    //.then(res => {
+                    //    console.log(res); // Returned data
+                    //})
+
+                    // Show the message and transition to mysites page
+                    if(!alert('Deleted!')){
+                        location.href = "../pages/mysites.php";
+                    }   
+                }
+            }
+        </script>
+
+        <!-- Footer -->
         <footer class="footer bg-dark">
             <div class="container text-center mt-1">
                 <p class="text-white title">©2023 Archaeology club, Inc. All Rights Reserved</p>

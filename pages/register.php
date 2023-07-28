@@ -2,6 +2,7 @@
 //Conneco to database
 require('dbconnect.php');
 
+// When 
 if (!empty($_POST)) {
     // Blank check
     if ($_POST['username'] === "") {
@@ -65,6 +66,7 @@ if (!empty($_POST)) {
         <link rel="stylesheet" href="../css/external_footer.css">
     </head>
     <body>
+        <!-- Top menu -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand title" href="#">Archaeological map in Ireland</a>
@@ -95,14 +97,14 @@ if (!empty($_POST)) {
             <form id="registerForm" name="registerForm" action=""  method="POST">           
                 <div class="mb-3">
                     <label for="username" class="form-label">User name</label>
-                    <input type="text" class="form-control" id="username" name="username">
+                    <input type="text" class="form-control" id="username" name="username" required>
                     <?php if (!empty($error["username"]) && $error['username'] === 'blank'): ?>
                         <p class="error" style="color:red">*Please enter your username.</p>
                     <?php endif ?>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="text" class="form-control" id="email" name="email">
+                    <input type="text" class="form-control" id="email" name="email" required>
                     <?php if (!empty($error["email"]) && $error['email'] === 'blank'): ?>
                         <p class="error" style="color:red">*Please enter your email.</p>
                     <?php elseif (!empty($error["email"]) && $error['email'] === 'duplicate'): ?>
@@ -113,7 +115,7 @@ if (!empty($_POST)) {
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordRule">
+                    <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordRule" required>
                     <?php if (!empty($error["password"]) && $error['password'] === 'blank'): ?>
                         <p class="error" style="color:red">*Please enter your password.</p>
                     <?php elseif (!empty($error["password"]) && $error['password'] === 'invalid'): ?>
@@ -129,6 +131,7 @@ if (!empty($_POST)) {
             </form>
         </div>
 
+        <!-- Footer -->
         <footer class="footer bg-dark">
             <div class="container text-center mt-1">
                 <p class="text-white title">©2023 Archaeology club, Inc. All Rights Reserved</p>
