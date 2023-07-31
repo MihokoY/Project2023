@@ -4,9 +4,18 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/Project2023/pages/map.php</file>
+            <file>file:/C:/xampp/htdocs/Project2023/pages/editsite.php</file>
+            <file>file:/C:/xampp/htdocs/Project2023/pages/getSiteID.php</file>
+            <file>file:/C:/xampp/htdocs/Project2023/pages/addsite.php</file>
+            <file>file:/C:/xampp/htdocs/Project2023/pages/changeSite.php</file>
+            <file>file:/C:/xampp/htdocs/Project2023/pages/deleteSite.php</file>
+            <file>file:/C:/xampp/htdocs/Project2023/pages/mysites.php</file>
+            <file>file:/C:/xampp/htdocs/Project2023/pages/addFav.php</file>
+            <file>file:/C:/xampp/htdocs/Project2023/pages/deleteFav.php</file>
             <file>file:/C:/xampp/htdocs/Project2023/index.php</file>
-            <file>file:/C:/xampp/htdocs/Project2023/css/external_footer.css</file>
+            <file>file:/C:/xampp/htdocs/Project2023/pages/mymap.php</file>
             <file>file:/C:/xampp/htdocs/Project2023/css/external.css</file>
+            <file>file:/C:/xampp/htdocs/Project2023/pages/getCoordinate.php</file>
             <file>file:/C:/xampp/htdocs/Project2023/pages/register.php</file>
         </group>
     </open-files>

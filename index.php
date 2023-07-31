@@ -43,6 +43,9 @@ session_start();
                         <li class="nav-item">
                             <a class="nav-link" href="pages/logout.php">Logout</a>
                         </li>
+                        <li class="nav-item">
+                            <p class="nav-link text-white">&#128100;<?php echo $_SESSION["user_name"]; ?></p>
+                        </li>
                     </ul>
                 </div>
                 <!-- Menu for not logged in users -->
@@ -56,7 +59,7 @@ session_start();
                             <a class="nav-link" href="pages/map.php">Explore map</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="pages/register.php">Join member</a>
+                            <a class="nav-link" href="pages/register.php">Join us</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="pages/login.php">Login</a>
@@ -85,8 +88,8 @@ session_start();
                 <div class="carousel-item">
                     <img src="images/home2.jpg" class="d-block w-50 mx-auto" alt="home2">
                     <div class="carousel-caption d-none d-md-block">
-                        <h3>Join the member</h3>
-                        <h6><a href="pages/register.php">Let's join the member and create our map together! ⇒</a></h6>
+                        <h3>Join a membership</h3>
+                        <h6><a href="pages/register.php">Let's join a membership and create our map together! ⇒</a></h6>
                     </div>
                 </div>
                 <div class="carousel-item">

@@ -8,8 +8,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-// Connect to the database and execute query
+// Connect to the database
 require('dbconnect.php');
+//
 $stmt = $db->prepare("SELECT * FROM sites INNER JOIN mymap ON sites.id = mymap.site_id WHERE mymap.user_id = ?");
 $stmt->bindValue(1, $_SESSION["user_id"]);
 $stmt->execute();
@@ -83,6 +84,7 @@ $json = json_encode($siteData);
             </div>
         </nav>
 
+        <!-- Map -->
         <div id="map"></div>
 
         <script>
@@ -95,7 +97,7 @@ $json = json_encode($siteData);
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
 
-            // Initial display popup
+            // Initial popup display
             var popup = L.popup()
             .setLatLng([54.769009, -10.042556])
             .setContent("<b>My map!</b>")
@@ -116,7 +118,7 @@ $json = json_encode($siteData);
 
             // When the delete button is clicked
             function onButtonClick() {
-                answer = confirm('Are you sure you want to remove this site from your map?');
+                answer = confirm('Do you want to remove this site from your map?');
                 if(answer === true){
                     fetch('deleteFav.php');
                     //.then(response => response.json())

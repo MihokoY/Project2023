@@ -2,9 +2,9 @@
 // Start session processing
 session_start();
 
-// Connect to the database and execute query
+// Connect to the database
 require('dbconnect.php');
-//$stmt = $db->prepare("SELECT name,description,X(coordinate),Y(coordinate) FROM site");
+// Get sites information from the sites table
 $stmt = $db->prepare("SELECT * FROM sites");
 $stmt->execute();
 
@@ -14,9 +14,6 @@ $siteData = array();
 // Get results in the array
 while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ 
     $siteData[] = array(
-        //'coordinate'=>$row['coordinate'],
-        //'latitude'=>$row['X(coordinate)'],
-        //'longitude '=>$row['Y(coordinate)'],
         'id' => $row['id'],
         'latitude' => $row['latitude'],
         'longitude' => $row['longitude'],
@@ -29,29 +26,33 @@ while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
 // Convert PHP array to JSON formatted data
 $json = json_encode($siteData);
 
-
 //Initialize array
 $json2 = "[]";
 $json3 = "[]";
 
-// If user is logged in
+// If the user is logged in
 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     $login_user_id = $_SESSION["user_id"];
 
+    // Get favourite site ID of the user
     $stmt2 = $db->prepare("SELECT * FROM mymap WHERE user_id = $login_user_id");
     $stmt2->execute();
     $siteIds = array();
-    while($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)){ // Get results in the array
+    // Get results in the array
+    while($row2 = $stmt2->fetch(PDO::FETCH_ASSOC)){ 
         $siteIds[] = array(
             'site_id' => $row2['site_id']
         );
     }
+    // Convert PHP array to JSON formatted data
     $json2 = json_encode($siteIds);
     
 }else{
+    // If the user is not logged in, set a parameter
     $param[] = array(
         "member" => "no"
     );
+    // Convert PHP array to JSON formatted data
     $json3 = json_encode($param);
 }
 
@@ -117,7 +118,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                             <a class="nav-link" href="../pages/map.php">Explore map</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/register.php">Join member</a>
+                            <a class="nav-link" href="../pages/register.php">Join us</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../pages/login.php">Login</a>
@@ -128,43 +129,44 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
             </div>
         </nav>
 
+        <!-- Map -->
         <div id="map"></div>
 
         <script>
             // Initial display coordinates
-            var map = L.map('map').setView([53.4494762, -7.5029786], 7);
-
-            // Set max bouds
-            var Bounds = [[55.640399, -11.272559], [51.082822, -5.073562]];
+            var map = L.map('map', {
+                // Limit display to Ireland
+                maxBounds: [[55.691918, -11.272559], [51.082822, -5.073562]]
+                }).setView([53.4494762, -7.5029786], 7); // Central point
                        
             // Add a OpenStreetMap tile layer
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
-                maxBounds: [[55.640399, -11.272559], [51.082822, -5.073562]],
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
 
-            // Initial display popup
+            // Initial popup display
             var popup = L.popup()
             .setLatLng([54.769009, -10.042556])
             .setContent("<b>Let's explore map!</b>")
             .openOn(map);
     
-            // When the add button is clicked
+            // When the "Add to my map" button is clicked
             function onButtonClick() {
-                answer = confirm('Are you sure you want to add this site to your map?');
-                if(answer === true){                    
+                answer = confirm('Do you want to add this site to your map?');
+                if(answer === true){
+                    // Invoke the addFav.php
                     fetch('addFav.php');
                     //.then(response => response.json())
                     //.then(res => {
                     //    console.log(res);
                     ////    alert(res);
                     //});
-                    
+                    //
+                    // Show the message
                     if(!alert('Added!')){
                         window.location.reload();
                     }
-                    
                 }
             }
 
@@ -174,7 +176,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                 fetch('getSiteID.php', { // Destination
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(e.target.siteId.toString()) // Convert to json format and attach
+                    body: JSON.stringify(e.target.siteId.toString()) // Convert siteID to json format and attach
                 });
                 //.then(response => response.json())
                 //.then(res => {
@@ -189,6 +191,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
             var array3 = <?php echo $json3; ?>;
             var markers;
             
+            // Show markers
             // Non member
             if(array3.length !== 0 && array2.length === 0){
                 //alert('if');
@@ -205,6 +208,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                                 .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']);
                     }
                 });
+                
             // Member with some favourites
             }else if(array2.length !== 0){
                 //alert('elseif');
@@ -247,6 +251,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                         }
                     });
                 });
+                
             // Member without favourite
             }else{
                 //alert('else');

@@ -2,25 +2,16 @@
 // Start session processing
 session_start();
 
-// Receive site ID value
-$raw = file_get_contents('php://input'); // Receive POST data
-$siteId = json_decode($raw); // Convert JSON format to PHP variable
+// Receive POST data(site ID)
+$raw = file_get_contents('php://input');
+// Convert JSON format to PHP variable
+$siteId = json_decode($raw); 
 
-// Delete the site from sites table
+// Connect to the database
 require('dbconnect.php');
+// Delete the site from the sites table
 $stmt = $db->prepare("DELETE FROM sites WHERE id = ?");
 $stmt->bindValue(1, $siteId);
 $stmt->execute();
-
-// Return to JavaScript
-//$favData=array();
-//while($row=$stmt->fetch(PDO::FETCH_ASSOC)){ // Get results in the array
-//    $favData[]=array(
-//        'id'=>$row['id']
-//    );
-//}
-
-// Convert PHP array to JSON formatted data
-//$json = json_encode($siteID);
 
 ?>

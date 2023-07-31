@@ -8,7 +8,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-// Cut latitude and longitude from coordinate
+// Cut out latitude and longitude from coordinate
 $latitude_before = mb_strstr($_SESSION["coordinate"], "," , true); //Cut out the part before the comma
 $latitude = substr($latitude_before, 7); //Cut out the 8th and subsequent characters 
 
@@ -16,49 +16,40 @@ $longitude_before = mb_strstr($_SESSION["coordinate"], "," , false); //Cut out t
 $longitude_before2 = substr($longitude_before, 2); //Cut out the 2nd and subsequent characters 
 $longitude = rtrim($longitude_before2, ")"); //Remove last bracket
         
-//Conneco to database
+//Conneco to the database
 require('dbconnect.php');
 
+// When Add button is clicked
 if (!empty($_POST)) {
-    // Blank check
-    //if ($_POST['sitename'] === "") {
-    //    $error['sitename'] = "blank";
-    //}
-    //if ($_POST['description'] === "") {
-    //    $error['description'] = "blank";
-    //}
-  
-    //if (!isset($error)) {
-        // With image
-        if(!empty($_FILES["upload_image"]["name"])){
-            $statusMsg = '';
-            //$allowTypes = array('jpg','png','jpeg','gif','pdf');
-            $filename = basename($_FILES['upload_image']['name']);
-            $uploadedPath = '../images/'.$filename;       
-            //$filetype = pathinfo($uploadedPath, PATHINFO_EXTENSION);
-            //if(in_array($allowTypes, $filetype)){
-            
-            if(move_uploaded_file($_FILES['upload_image']['tmp_name'], $uploadedPath)){
-                // Set data into database
-                $stmt1 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, image, user_id) VALUE(?, ?, ?, ?, ?, ?)");
-                $stmt1->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $filename, $_SESSION["user_id"]]);
-            }else{
-                $statusMsg = "File upload failed";
-            }           
-            //}
-            echo $statusMsg;
-            
-        // Without image
+    
+    // With image
+    if(!empty($_FILES["upload_image"]["name"])){
+        $statusMsg = '';
+        // Get the file name
+        $filename = basename($_FILES['upload_image']['name']);
+        // Path of the destination folder
+        $uploadedPath = '../images/'.$filename;       
+
+        // Move the image to the destination folder
+        if(move_uploaded_file($_FILES['upload_image']['tmp_name'], $uploadedPath)){
+            // Insert the data into the sites table
+            $stmt1 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, image, user_id) VALUE(?, ?, ?, ?, ?, ?)");
+            $stmt1->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $filename, $_SESSION["user_id"]]);
         }else{
-            // Set data into database
-            $stmt2 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, user_id) value(?, ?, ?, ?, ?)");
-            $stmt2->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $_SESSION["user_id"]]);
-        }
-        
-        // Move to addsite_complete page
-        header('Location: addsite_complete.php');
-        exit();
-    //}
+            $statusMsg = "File upload failed";
+        }           
+        echo $statusMsg;
+
+    // Without image
+    }else{
+        // Insert the data into the sites table
+        $stmt2 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, user_id) value(?, ?, ?, ?, ?)");
+        $stmt2->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $_SESSION["user_id"]]);
+    }
+
+    // Move to addsite_complete page
+    header('Location: addsite_complete.php');
+    exit();
 }
 ?>
 
@@ -104,30 +95,25 @@ if (!empty($_POST)) {
             </div>
         </nav>
 
+        <!-- Add new site form -->
         <div class="container mt-3">
             <h2>Add new site</h2>
             <form id="additionForm" name="additionForm" action=""  method="POST" enctype="multipart/form-data">           
                 <div class="mb-3">
                     <label for="coordinate" class="form-label">Coordinate</label>
-                    <!--<p><b>Coordinate: <?php echo htmlspecialchars($_SESSION["coordinate"], ENT_QUOTES);?></b></p>-->
                     <p><b>Latitude: <?php echo htmlspecialchars($latitude, ENT_QUOTES);?>, Longitude: <?php echo htmlspecialchars($longitude, ENT_QUOTES);?></b></p>
                 </div>
                 <div class="mb-3">
                     <label for="sitename" class="form-label">Site name</label>
                     <input type="text" class="form-control" id="sitename" name="sitename" required>
-                    <?php if (!empty($error["sitename"]) && $error['sitename'] === 'blank'): ?>
-                        <p class="error" style="color:red">*Please enter the site name.</p>
-                    <?php endif ?>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
-                    <?php if (!empty($error["description"]) && $error['description'] === 'blank'): ?>
-                        <p class="error" style="color:red">*Please enter the description.</p>
-                    <?php endif ?>
                 </div>
                 <div class="mb-3">
                     <input type="file" name="upload_image">
+                    <!-- If there is an error, show the error -->
                     <?php if (!empty($_FILES['upload_image']['error'])): ?>
                         <p class="error" style="color:red"><?php $_FILES['upload_image']['error']?></p>
                     <?php endif ?>

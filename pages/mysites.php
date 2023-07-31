@@ -8,19 +8,20 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
+//If the user transitions after changing the site, show a completion message
 if(isset($_SESSION["fromChangeSite"]) && $_SESSION["fromChangeSite"] === true){
     echo "<script>alert('Changed!');</script>";
     $_SESSION["fromChangeSite"] = false;
 }
 
-// Connect to the database and execute query
+// Connect to the database
 require('dbconnect.php');
+// Get site information of the user
 $stmt = $db->prepare("SELECT * FROM sites WHERE user_id = ?");
 $stmt->bindValue(1, $_SESSION["user_id"]);
 $stmt->execute();
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,6 +65,7 @@ $stmt->execute();
             </div>
         </nav>
         
+        <!-- Title -->
         <div class="container my-3">
             <div class="row">
                 <div class="col-12">
@@ -72,23 +74,26 @@ $stmt->execute();
             </div>
         </div>
         
-        <!-- If the user doesn't have any registered site -->
-        <?php if(empty($stmt)): ?>
-        <div class="container my-3">
+        <!-- If the user does not have any registered site, show below -->
+        <?php if($stmt->rowCount() === 0): ?>
+        <div class="container py-3 mb-2 border border-secondary border-2">
             <div class="row">
-                <div class="col-12">
-                    <h5>No site</h5>
-                    <h6><a href="../pages/map.php" class="link-dark">Let's add new site ⇒</a></h6>
+                <div class="col-6">
+                    <h3>No site registered yet.</h3>
+                    <h4><a href="../pages/map.php" class="link-dark">Let's add new site ⇒</a></h4>
+                </div>
+                <div class="col-6">
+                    <img class="w-100" src="../images/nosite.jpg">
                 </div>
             </div>
         </div>
-        <?php endif ?>
+        <?php endif; ?>
         
         <!-- Display sites -->
         <?php while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ ?>
         <div class="container py-3 mb-2 border border-secondary border-2">
             <div class="row">
-                <div class="col-8">
+                <div class="col-6">
                     <div class="row">
                         <div class="col-12">
                             <h3 class="fst-italic"><?php echo $row["name"]; ?></h3>
@@ -106,11 +111,11 @@ $stmt->execute();
                     </div>                  
                 </div>
                 <?php if ($row["image"] !== null){ ?>
-                <div class="col-4">
+                <div class="col-6">
                     <img class="w-100" src="../images/<?php echo $row["image"]; ?>">
                 </div>
                 <?php }else{ ?>
-                <div class="col-4">
+                <div class="col-6">
                     <p><b>No image</b></p>
                 </div>
                 <?php } ?>
@@ -119,10 +124,7 @@ $stmt->execute();
                 <div class="col-12 text-end mt-3">
                     <form name="mysitesForm" action="editsite.php" method="post">
                         <input type="hidden" name="siteId" id="siteId" value="<?php echo $row["id"] ?>">
-                        <!--<input type="submit" name="change" value="Change" class="btn btn-success" onclick="location.href='../pages/editsite.php'">-->
                         <input type="submit" name="edit" value="Edit" class="btn btn-success">
-                        <!--<input type="button" name="delete" value="Delete" class="btn btn-success" onclick="onDeleteButtonClick();">-->
-                        <!--<input type="submit" name="delete" value="Delete" class="btn btn-success">-->
                     </form>
                 </div>
             </div>

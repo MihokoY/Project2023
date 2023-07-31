@@ -27,7 +27,7 @@
                             <a class="nav-link" href="../pages/map.php">Explore map</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/register.php">Join member</a>
+                            <a class="nav-link" href="../pages/register.php">Join us</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../pages/login.php">Login</a>

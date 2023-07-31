@@ -1,48 +1,38 @@
 <?php
-//Conneco to database
+//Conneco to the database
 require('dbconnect.php');
 
-// When 
+// When the Register button is clicked
 if (!empty($_POST)) {
-    // Blank check
-    if ($_POST['username'] === "") {
-        $error['username'] = "blank";
-    }
-    if ($_POST['email'] === "") {
-        $error['email'] = "blank";
-    }
-    if ($_POST['password'] === "") {
-        $error['password'] = "blank";
+
+    //Check if there is a duplicate email in the member table
+    $member = $db->prepare('SELECT COUNT(*) as cnt FROM member WHERE email=?');
+    $member->execute(array(
+        $_POST['email']
+    ));
+    $record = $member->fetch();
+    // If there is a duplicate email, put "duplicate" in the variable for errors
+    if ($record['cnt'] > 0) {
+        $error['email'] = "duplicate";
     }
 
+    //Email validation
+    if (!$email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        // If it is invalid, put "invalid" in the variable for errors
+        $error['email'] = "invalid";
+    }
+
+    //Password validation
+    if (preg_match('/\A(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,100}+\z/i', $_POST['password'])) {
+        $h_password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    } else {
+        // If it is invalid, put "invalid" in the variable for errors
+        $error['password'] = "invalid";
+    }
+
+    // If there is no error, update the database
     if (!isset($error)) {
-        //Check if it is a duplicate email in the database.
-        $member = $db->prepare('SELECT COUNT(*) as cnt FROM member WHERE email=?');
-        $member->execute(array(
-            $_POST['email']
-        ));
-        $record = $member->fetch();
-        if ($record['cnt'] > 0) {
-            $error['email'] = 'duplicate';
-        }
-
-        //Email validation
-        if (!$email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-            $error['email'] = 'invalid';
-            //return false;
-        }
-
-        //Password validation
-        if (preg_match('/\A(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,100}+\z/i', $_POST['password'])) {
-            $h_password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-        } else {
-            $error['$password'] = 'invalid';
-            //return false;
-        }
-    }
-
-    if (!isset($error)) {
-        // Set data into database
+        // Insert the data into the member table
         $stmt = $db->prepare("INSERT INTO member(name, email, pass) VALUE(?, ?, ?)");
         $stmt->execute([$_POST['username'], $_POST['email'], $h_password]);
 
@@ -58,7 +48,7 @@ if (!empty($_POST)) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Join member</title>
+        <title>Join a membership</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
               integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
               crossorigin="anonymous">  
@@ -82,7 +72,7 @@ if (!empty($_POST)) {
                             <a class="nav-link" href="../pages/map.php">Explore map</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/register.php">Join member</a>
+                            <a class="nav-link" href="../pages/register.php">Join us</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../pages/login.php">Login</a>
@@ -92,22 +82,19 @@ if (!empty($_POST)) {
             </div>
         </nav>
 
+        <!-- Register form -->
         <div class="container mt-3">
-            <h2 class="login_h2">Join member</h2>
+            <h2 class="login_h2">Join a membership</h2>
             <form id="registerForm" name="registerForm" action=""  method="POST">           
                 <div class="mb-3">
                     <label for="username" class="form-label">User name</label>
                     <input type="text" class="form-control" id="username" name="username" required>
-                    <?php if (!empty($error["username"]) && $error['username'] === 'blank'): ?>
-                        <p class="error" style="color:red">*Please enter your username.</p>
-                    <?php endif ?>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="text" class="form-control" id="email" name="email" required>
-                    <?php if (!empty($error["email"]) && $error['email'] === 'blank'): ?>
-                        <p class="error" style="color:red">*Please enter your email.</p>
-                    <?php elseif (!empty($error["email"]) && $error['email'] === 'duplicate'): ?>
+                    <!-- If the email is already registered or invalid, show the error message -->
+                    <?php if (!empty($error["email"]) && $error['email'] === 'duplicate'): ?>
                         <p class="error" style="color:red">*This email is already registered.</p>
                     <?php elseif (!empty($error["email"]) && $error['email'] === 'invalid'): ?>
                         <p class="error" style="color:red">*The value you entered is invalid.</p>
@@ -116,9 +103,8 @@ if (!empty($_POST)) {
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordRule" required>
-                    <?php if (!empty($error["password"]) && $error['password'] === 'blank'): ?>
-                        <p class="error" style="color:red">*Please enter your password.</p>
-                    <?php elseif (!empty($error["password"]) && $error['password'] === 'invalid'): ?>
+                    <!-- If the password is invalid, show the error message -->
+                    <?php if (!empty($error["password"]) && $error['password'] === 'invalid'): ?>
                         <p class="error" style="color:red">*The value you entered is invalid.</p>
                     <?php endif ?>
                     <div id="passwordRule" class="form-text">

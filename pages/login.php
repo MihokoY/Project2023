@@ -1,6 +1,4 @@
 <?php
-require_once "dbconnect.php";
-
 // Start session processing
 session_start();
 
@@ -12,7 +10,9 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 
 // When the Login button is clicked
 if (!empty($_POST)) {
-    // Get the relevant user information from email
+    // Connect to the database
+    require "dbconnect.php";
+    // Get the relevant user information with the email from the member table
     $stmt = $db->prepare('select * from member where email = ?');
     $stmt->execute([$_POST['email']]);
 
@@ -20,15 +20,23 @@ if (!empty($_POST)) {
     if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
         // Check if the password is correct
         if (password_verify($_POST['password'],$row['pass'])) {
+            
             // Set a new session ID
             session_regenerate_id(true);
             // Store login information in session variables
             $_SESSION["loggedin"] = true;
             $_SESSION["user_id"] = $row['id'];
-            // Transition to Map page
-            header('Location:map.php');
-            exit();
-            
+            $_SESSION["user_name"] = $row['name'];
+            // If the user is an administrator, go to the Manage sites page
+            if($row['id'] === 1){
+                header('Location:managesites.php');
+                exit();
+            }else{
+                // Transition to Map page
+                header('Location:map.php');
+                exit();
+            }
+              
         // If the password is incorrect, put "invalid" in the variable for errors
         } else {
             $error['password'] = "invalid";
@@ -69,7 +77,7 @@ if (!empty($_POST)) {
                             <a class="nav-link" href="../pages/map.php">Explore map</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/register.php">Join member</a>
+                            <a class="nav-link" href="../pages/register.php">Join us</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../pages/login.php">Login</a>
@@ -79,7 +87,7 @@ if (!empty($_POST)) {
             </div>
         </nav>
         
-        <!-- Login form part-->
+        <!-- Login form -->
         <div class="container mt-3">
             <h2>Login</h2>
             <!-- If the email or password is incorrect, show the error message -->
@@ -98,7 +106,7 @@ if (!empty($_POST)) {
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
                 <button type="submit" class="btn btn-success">Login</button>
-                <p>Not our member? <a href="register.php">Join member now</a></p>
+                <p>Not our member? <a href="register.php">Join us now</a></p>
             </form>
         </div>
 

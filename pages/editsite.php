@@ -1,6 +1,8 @@
 <?php
 // Start session processing
 session_start();
+
+// Get the hidden value(site ID)
 //echo $_POST['siteId'];
 $postSiteId = $_POST['siteId'];
 
@@ -10,12 +12,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
         
-//Conneco to database
+//Conneco to the database
 require('dbconnect.php');
+// Get the site information from the sites table
 $stmt = $db->prepare("SELECT * FROM sites WHERE id = ?");
 $stmt->bindValue(1, $postSiteId);
 $stmt->execute();
-
+// Store the data
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 ?>
@@ -62,12 +65,12 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
         </nav>
 
+        <!-- Edit site form -->
         <div class="container mt-3">
             <h2>Edit site</h2>
-            <form id="changeForm" name="changeForm" action="changeSite.php" onsubmit="return onChangeButtonClick()" method="POST" enctype="multipart/form-data">           
+            <form id="editForm" name="editForm" action="changeSite.php" onsubmit="return onChangeButtonClick()" method="POST" enctype="multipart/form-data">           
                 <div class="mb-3">
                     <label for="coordinate" class="form-label">Coordinate</label>
-                    <!--<p><b>Coordinate: <?php echo htmlspecialchars($_SESSION["coordinate"], ENT_QUOTES);?></b></p>-->
                     <p><b>Latitude: <?php echo $row['latitude']; ?>, Longitude: <?php echo $row['longitude']; ?></b></p>
                 </div>
                 <div class="mb-3">
@@ -80,9 +83,11 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 </div>
                 <div class="mb-3">
                     <input type="file" name="upload_image">
+                    <!-- If there is an image, show the message -->
                     <?php if (!empty($row['image'])): ?>
-                    <p>*If you don't upload an image, registered image won't change. Registered image name: <?php echo $row['image']; ?></p>
+                    <p>*If you don't upload an image, registered image won't change.<br>Registered image name: <?php echo $row['image']; ?></p>
                     <?php endif ?>
+                    <!-- If there is an error, show the error -->
                     <?php if (!empty($_FILES['upload_image']['error'])): ?>
                     <p class="error" style="color:red"><?php $_FILES['upload_image']['error']?></p>
                     <?php endif ?>
@@ -95,9 +100,10 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
             </form>
         </div>
     
+        <!--
         <script>
             function onChangeButtonClick() {
-                var answer = confirm('Are you sure you want to change this site?');
+                var answer = confirm('Do you want to change this site?');
                 return answer;
             }
 
@@ -107,7 +113,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 //alert(siteId);
 
                 // Show the message to confirm deletion
-                var answer = confirm('Are you sure you want to delete this site?');
+                var answer = confirm('Do you want to delete this site?');
 
                 // If the user click "OK"
                 if(answer === true){
@@ -129,6 +135,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 }
             }
         </script>
+        -->
 
         <!-- Footer -->
         <footer class="footer bg-dark">
@@ -140,5 +147,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
                 crossorigin="anonymous"></script>
+        <script src="../js/editSite.js"></script>
     </body>
 </html>
