@@ -44,7 +44,7 @@ session_start();
                             <a class="nav-link" href="pages/logout.php">Logout</a>
                         </li>
                         <li class="nav-item">
-                            <p class="nav-link text-white">&#128100;<?php echo $_SESSION["user_name"]; ?></p>
+                            <a class="nav-link text-white">&#128100;<?php echo $_SESSION["user_name"]; ?></a>
                         </li>
                     </ul>
                 </div>

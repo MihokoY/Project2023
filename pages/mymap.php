@@ -79,6 +79,9 @@ $json = json_encode($siteData);
                         <li class="nav-item">
                             <a class="nav-link" href="../pages/logout.php">Logout</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white">&#128100;<?php echo $_SESSION["user_name"]; ?></a>
+                        </li>
                     </ul>
                 </div>
             </div>

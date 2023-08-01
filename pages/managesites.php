@@ -39,10 +39,13 @@ $stmt->execute();
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/sites.php">Manage sites</a>
+                            <a class="nav-link" href="../pages/managesites.php">Manage sites</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="../pages/logout.php">Logout</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white">&#128100;<?php echo $_SESSION["user_name"]; ?></a>
                         </li>
                     </ul>
                 </div>
