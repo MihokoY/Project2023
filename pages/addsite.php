@@ -17,7 +17,7 @@ $longitude_before2 = substr($longitude_before, 2); //Cut out the 2nd and subsequ
 $longitude = rtrim($longitude_before2, ")"); //Remove last bracket
         
 //Conneco to the database
-require('dbconnect.php');
+require('../php/dbconnect.php');
 
 // When Add button is clicked
 if (!empty($_POST)) {
@@ -88,7 +88,7 @@ if (!empty($_POST)) {
                             <a class="nav-link" href="../pages/mysites.php">My sites</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/logout.php">Logout</a>
+                            <a class="nav-link" href="../php/logout.php">Logout</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white">&#128100;<?php echo $_SESSION["user_name"]; ?></a>

@@ -17,7 +17,7 @@ function onDeleteButtonClick() {
     // If the user clicks "OK"
     if(answer === true){
         // Call deleteSite.php with the site ID
-        fetch('deleteSite.php', { // Destination
+        fetch('../php/deleteSite.php', { // Destination
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(siteId.toString()) // Convert to json format and attach

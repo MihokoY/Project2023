@@ -9,7 +9,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
 }
 
 // Connect to the database
-require('dbconnect.php');
+require('../php/dbconnect.php');
 // Get all site information
 $stmt = $db->prepare("SELECT * FROM sites");
 $stmt->execute();
@@ -45,7 +45,7 @@ $stmt->execute();
                             <a class="nav-link" href="../pages/managemembers.php">Manage members</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/logout.php">Logout</a>
+                            <a class="nav-link" href="../php/logout.php">Logout</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white">&#128100;<?php echo $_SESSION["user_name"]; ?></a>
@@ -101,7 +101,7 @@ $stmt->execute();
             </div>
             <div class="row">              
                 <div class="col-12 text-end mt-3">
-                    <form name="managesitesForm" action="changeSiteFlg.php" onsubmit="return onValidityButtonClick()" method="POST">
+                    <form name="managesitesForm" action="../php/changeSiteFlg.php" onsubmit="return onValidityButtonClick()" method="POST">
                         <input type="hidden" name="postData[0]" id="siteId" value="<?php echo $row["id"] ?>">
                         <input type="hidden" name="postData[1]" id="flag" value="<?php echo $row["flg"] ?>">
                         <input type="submit" name="validity" value="Change validity" class="btn btn-success">

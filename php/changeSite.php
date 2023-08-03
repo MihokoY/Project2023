@@ -6,7 +6,7 @@ session_start();
 $postSiteId = $_POST['siteId'];
 
 //Conneco to the database
-require('dbconnect.php');
+require('../php/dbconnect.php');
 
 // When the change button is clicked, then OK button clicked
 if (!empty($_POST)) {
@@ -42,7 +42,7 @@ if (!empty($_POST)) {
     //$_SESSION["fromChangeSite"] = true; 
 
     // Move to mysites page
-    header('Location: mysites.php');
+    header('Location: ../pages/mysites.php');
     exit();
 }
 

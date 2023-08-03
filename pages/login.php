@@ -11,7 +11,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
 // When the Login button is clicked
 if (!empty($_POST)) {
     // Connect to the database
-    require "dbconnect.php";
+    require ('../php/dbconnect.php');
     // Get the relevant user information with the email from the member table
     $stmt = $db->prepare('select * from member where email = ?');
     $stmt->execute([$_POST['email']]);

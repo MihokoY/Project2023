@@ -15,7 +15,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 //}
 
 // Connect to the database
-require('dbconnect.php');
+require('../php/dbconnect.php');
 // Get site information of the user
 $stmt = $db->prepare("SELECT * FROM sites WHERE user_id = ? and flg = 1");
 $stmt->bindValue(1, $_SESSION["user_id"]);
@@ -58,7 +58,7 @@ $stmt->execute();
                             <a class="nav-link" href="../pages/mysites.php">My sites</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/logout.php">Logout</a>
+                            <a class="nav-link" href="../php/logout.php">Logout</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white">&#128100;<?php echo $_SESSION["user_name"]; ?></a>

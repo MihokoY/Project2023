@@ -13,7 +13,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
         
 //Conneco to the database
-require('dbconnect.php');
+require('../php/dbconnect.php');
 // Get the site information from the sites table
 $stmt = $db->prepare("SELECT * FROM sites WHERE id = ?");
 $stmt->bindValue(1, $postSiteId);
@@ -58,7 +58,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                             <a class="nav-link" href="../pages/mysites.php">My sites</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/logout.php">Logout</a>
+                            <a class="nav-link" href="../php/logout.php">Logout</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white">&#128100;<?php echo $_SESSION["user_name"]; ?></a>
@@ -71,7 +71,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
         <!-- Edit site form -->
         <div class="container mt-3">
             <h2>Edit site</h2>
-            <form id="editForm" name="editForm" action="changeSite.php" onsubmit="return onChangeButtonClick()" method="POST" enctype="multipart/form-data">           
+            <form id="editForm" name="editForm" action="../php/changeSite.php" onsubmit="return onChangeButtonClick()" method="POST" enctype="multipart/form-data">           
                 <div class="mb-3">
                     <label for="coordinate" class="form-label">Coordinate</label>
                     <p><b>Latitude: <?php echo $row['latitude']; ?>, Longitude: <?php echo $row['longitude']; ?></b></p>
@@ -121,7 +121,7 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 // If the user click "OK"
                 if(answer === true){
                     // Call deleteSite.php with site ID
-                    fetch('deleteSite.php', { // Destination
+                    fetch('../php/deleteSite.php', { // Destination
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(siteId.toString()) // Convert to json format and attach

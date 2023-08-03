@@ -3,7 +3,7 @@
 session_start();
 
 // Connect to the database
-require('dbconnect.php');
+require('../php/dbconnect.php');
 // Update the mymap table
 $stmt = $db->prepare("INSERT INTO mymap (user_id, site_id) VALUE (?, ?)");
 $stmt->bindValue(1, $_SESSION["user_id"]);

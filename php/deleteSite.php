@@ -8,7 +8,7 @@ $raw = file_get_contents('php://input');
 $siteId = json_decode($raw); 
 
 // Connect to the database
-require('dbconnect.php');
+require('../php/dbconnect.php');
 // Delete the site from the sites table
 $stmt = $db->prepare("DELETE FROM sites WHERE id = ?");
 $stmt->bindValue(1, $siteId);

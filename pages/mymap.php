@@ -9,7 +9,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
 
 // Connect to the database
-require('dbconnect.php');
+require('../php/dbconnect.php');
 //
 $stmt = $db->prepare("SELECT * FROM sites INNER JOIN mymap ON sites.id = mymap.site_id WHERE mymap.user_id = ? and sites.flg = 1");
 $stmt->bindValue(1, $_SESSION["user_id"]);
@@ -77,7 +77,7 @@ $json = json_encode($siteData);
                             <a class="nav-link" href="../pages/mysites.php">My sites</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/logout.php">Logout</a>
+                            <a class="nav-link" href="../php/logout.php">Logout</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white">&#128100;<?php echo $_SESSION["user_name"]; ?></a>
@@ -92,7 +92,10 @@ $json = json_encode($siteData);
 
         <script>
             // Initial display coordinates
-            var map = L.map('map').setView([53.4494762, -7.5029786], 7);
+            var map = L.map('map', {
+                // Limit display to Ireland
+                maxBounds: [[55.691918, -11.272559], [51.082822, -5.073562]]
+                }).setView([53.4494762, -7.5029786], 7); // Central point
 
             // Add a OpenStreetMap tile layer
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -123,7 +126,7 @@ $json = json_encode($siteData);
             function onButtonClick() {
                 answer = confirm('Do you want to remove this site from your map?');
                 if(answer === true){
-                    fetch('deleteFav.php');
+                    fetch('../php/deleteFav.php');
                     //.then(response => response.json())
                     //.then(res => {
                     //    console.log(res);
@@ -139,7 +142,7 @@ $json = json_encode($siteData);
             // When the marker is clicked
             function onMarkerClick(e){
                 //alert(e.target.id);
-                fetch('getSiteID.php', { // Destination
+                fetch('../php/getSiteID.php', { // Destination
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(e.target.siteId.toString()) // Convert to json format and attach
@@ -189,7 +192,7 @@ $json = json_encode($siteData);
                     .openOn(map);
 
                 // Pass coordinate value to PHP
-                fetch('getCoordinate.php', { // Destination
+                fetch('../php/getCoordinate.php', { // Destination
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(e.latlng.toString()) // Convert to json format and attach

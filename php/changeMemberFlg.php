@@ -7,7 +7,7 @@ $postSiteId = $_POST['postData'][0];
 $postFlag = $_POST['postData'][1];
 
 // Connect to the database
-require('dbconnect.php');
+require('../php/dbconnect.php');
 // Update the flg in the member table
 if($postFlag === "1"){
     $stmt = $db->prepare("UPDATE member SET flg = 0 WHERE id = $postSiteId");
@@ -17,7 +17,7 @@ if($postFlag === "1"){
 $stmt->execute();
 
 // Move to Manage members page
-header('Location: managemembers.php');
+header('Location: ../pages/managemembers.php');
 exit();
 
 ?>

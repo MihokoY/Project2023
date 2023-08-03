@@ -1,6 +1,6 @@
 <?php
 //Conneco to the database
-require('dbconnect.php');
+require('../php/dbconnect.php');
 
 // When the Register button is clicked
 if (!empty($_POST)) {

@@ -3,7 +3,7 @@
 session_start();
 
 // Connect to the database
-require('dbconnect.php');
+require('../php/dbconnect.php');
 // Get sites information from the sites table
 $stmt = $db->prepare("SELECT * FROM sites WHERE flg = 1");
 $stmt->execute();
@@ -103,7 +103,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                             <a class="nav-link" href="../pages/mysites.php">My sites</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="../pages/logout.php">Logout</a>
+                            <a class="nav-link" href="../php/logout.php">Logout</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white">&#128100;<?php echo $_SESSION["user_name"]; ?></a>
@@ -159,7 +159,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                 answer = confirm('Do you want to add this site to your map?');
                 if(answer === true){
                     // Invoke the addFav.php
-                    fetch('addFav.php');
+                    fetch('../php/addFav.php');
                     //.then(response => response.json())
                     //.then(res => {
                     //    console.log(res);
@@ -176,7 +176,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
             // When the marker is clicked
             function onMarkerClick(e){
                 //alert(e.target.id);
-                fetch('getSiteID.php', { // Destination
+                fetch('../php/getSiteID.php', { // Destination
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(e.target.siteId.toString()) // Convert siteID to json format and attach
@@ -264,7 +264,9 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                                 .addTo(map)
                                 .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
                                 .bindPopup("<b>"+ elm['name'] +"</b><br>" + elm['description']
-                                            +"<br><img src=\"../images/" + elm['image']+"\" width=\"200\" height=\"auto\"><br><br><input type=\"button\" value=\"Add to my map\" name=\"addF\" onclick=\"onButtonClick();\">");
+                                            +"<br><img src=\"../images/" + elm['image']
+                                            +"\" width=\"200\" height=\"auto\"><br>\n\
+                                            <br><input type=\"button\" value=\"Add to my map\" name=\"addF\" onclick=\"onButtonClick();\">");
                         markers.siteId = elm['id']; //Use when this marker is clicked
                     }else{
                         markers = L.marker([elm['latitude'],elm['longitude']])
@@ -289,7 +291,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
                     .openOn(map);
 
                 // Pass coordinate value to PHP
-                fetch('getCoordinate.php', { // Destination
+                fetch('../php/getCoordinate.php', { // Destination
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(e.latlng.toString()) // Convert to json format and attach
