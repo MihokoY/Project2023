@@ -18,29 +18,36 @@ if (!empty($_POST)) {
 
     // Check if there is user information
     if($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-        // Check if the password is correct
-        if (password_verify($_POST['password'],$row['pass'])) {
-            
-            // Set a new session ID
-            session_regenerate_id(true);
-            // Store login information in session variables
-            $_SESSION["loggedin"] = true;
-            $_SESSION["user_id"] = $row['id'];
-            $_SESSION["user_name"] = $row['name'];
-            // If the user is an administrator, go to the Manage sites page
-            if($row['id'] === 1){
-                header('Location:managesites.php');
-                exit();
-            }else{
-                // Transition to Map page
-                header('Location:map.php');
-                exit();
+        
+        // Check the flag
+        if($row['flg'] === 0){
+            $error['email'] = "invalid";
+        }else{
+            // Check if the password is correct
+            if (password_verify($_POST['password'],$row['pass'])) {
+
+                // Set a new session ID
+                session_regenerate_id(true);
+                // Store login information in session variables
+                $_SESSION["loggedin"] = true;
+                $_SESSION["user_id"] = $row['id'];
+                $_SESSION["user_name"] = $row['name'];
+                // If the user is an administrator, go to the Manage sites page
+                if($row['id'] === 1){
+                    header('Location:managesites.php');
+                    exit();
+                }else{
+                    // Transition to Map page
+                    header('Location:map.php');
+                    exit();
+                }
+
+            // If the password is incorrect, put "invalid" in the variable for errors
+            } else {
+                $error['password'] = "invalid";
             }
-              
-        // If the password is incorrect, put "invalid" in the variable for errors
-        } else {
-            $error['password'] = "invalid";
         }
+        
     // If there is no user information, put "invalid" in the variable for errors
     }else {
         $error['email'] = "invalid";

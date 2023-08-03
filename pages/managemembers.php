@@ -11,7 +11,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true || $_SESSION[
 // Connect to the database
 require('dbconnect.php');
 // Get all site information
-$stmt = $db->prepare("SELECT * FROM sites");
+$stmt = $db->prepare("SELECT * FROM member");
 $stmt->execute();
 
 ?>
@@ -21,7 +21,7 @@ $stmt->execute();
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Manage sites</title>
+        <title>Manage members</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
               integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
               crossorigin="anonymous">
@@ -55,61 +55,54 @@ $stmt->execute();
             </div>
         </nav>
         
-        <!-- Title -->
-        <div class="container my-3">
-            <div class="row">
-                <div class="col-12">
-                    <h2>Manage sites</h2>
-                </div>
+        <!-- Title -->        
+        <div class="row m-3">
+            <div class="col-12">
+                <h2>Manage members</h2>
             </div>
         </div>
         
-        <!-- Display sites -->
-        <?php while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ ?>
-        <?php if ($row["flg"] === 1){ ?>
-        <div class="container py-3 mb-2 border border-secondary border-2">
-        <?php }else{ ?>
-        <div class="container py-3 mb-2 border border-secondary border-2 bg-secondary">
-        <?php } ?>
-            <div class="row">
-                <div class="col-6">
-                    <div class="row">
-                        <div class="col-12">
-                            <h3 class="fst-italic"><?php echo $row["name"]; ?></h3>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <p class="fw-bold">Latitude:&nbsp;<?php echo $row["latitude"]; ?> , Longitude:&nbsp;<?php echo $row["longitude"]; ?></p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <p><?php echo $row["description"]; ?></p>
-                        </div>
-                    </div>                  
-                </div>
-                <?php if ($row["image"] !== null){ ?>
-                <div class="col-6">
-                    <img class="w-100" src="../images/<?php echo $row["image"]; ?>">
-                </div>
-                <?php }else{ ?>
-                <div class="col-6">
-                    <p><b>No image</b></p>
-                </div>
-                <?php } ?>
-            </div>
-            <div class="row">              
-                <div class="col-12 text-end mt-3">
-                    <form name="managesitesForm" action="changeSiteFlg.php" onsubmit="return onValidityButtonClick()" method="POST">
-                        <input type="hidden" name="postData[0]" id="siteId" value="<?php echo $row["id"] ?>">
-                        <input type="hidden" name="postData[1]" id="flag" value="<?php echo $row["flg"] ?>">
-                        <input type="submit" name="validity" value="Change validity" class="btn btn-success">
-                    </form>
-                </div>
+        <!-- Display mambers -->
+        <div class="row mx-3">
+            <div class="col-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Created date</th>
+                            <th scope="col">Change validity</th>
+                        </tr>
+                    </thead>
+                    <tbody>       
+                    <?php while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ ?>
+                        <?php if ($row["flg"] === 1){ ?>
+                        <tr>
+                        <?php }else{ ?>
+                        <tr class="bg-secondary">
+                        <?php } ?>
+                            <th scope="row"><?php echo $row["id"]; ?></th>
+                            <td><?php echo $row["name"]; ?></td>
+                            <td><?php echo $row["email"]; ?></td>
+                            <td><?php echo $row["created_date"]; ?></td>
+                            <td>
+                                <form name="managesitesForm" action="changeMemberFlg.php" onsubmit="return onValidityButtonClick()" method="POST">
+                                <input type="hidden" name="postData[0]" id="siteId" value="<?php echo $row["id"] ?>">
+                                <input type="hidden" name="postData[1]" id="flag" value="<?php echo $row["flg"] ?>">
+                                <?php if ($row["id"] === 1){ ?>
+                                <input type="submit" name="validity" value="Change" class="btn btn-success" disabled>
+                                <?php }else{ ?>
+                                <input type="submit" name="validity" value="Change" class="btn btn-success">
+                                <?php } ?>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <?php } ?>
 
         <!-- Footer -->
         <footer class="footer bg-dark">

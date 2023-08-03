@@ -9,15 +9,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
 
 //If the user transitions after changing the site, show a completion message
-if(isset($_SESSION["fromChangeSite"]) && $_SESSION["fromChangeSite"] === true){
-    echo "<script>alert('Changed!');</script>";
-    $_SESSION["fromChangeSite"] = false;
-}
+//if(isset($_SESSION["fromChangeSite"]) && $_SESSION["fromChangeSite"] === true){
+//    echo "<script>alert('Changed!');</script>";
+//    $_SESSION["fromChangeSite"] = false;
+//}
 
 // Connect to the database
 require('dbconnect.php');
 // Get site information of the user
-$stmt = $db->prepare("SELECT * FROM sites WHERE user_id = ?");
+$stmt = $db->prepare("SELECT * FROM sites WHERE user_id = ? and flg = 1");
 $stmt->bindValue(1, $_SESSION["user_id"]);
 $stmt->execute();
 

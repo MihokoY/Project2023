@@ -33,3 +33,9 @@ function onDeleteButtonClick() {
         }   
     }
 }
+
+// When the Change validity button is clicked on the Manage site page
+function onValidityButtonClick() {
+    var answer = confirm('Do you want to change the validity?');
+    return answer;
+}

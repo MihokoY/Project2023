@@ -39,7 +39,7 @@ if (!empty($_POST)) {
     // Show complete message
     //echo "<script>alert('Changed!');</script>";
     // Use session to show the cpmplete message on the mysites.php
-    $_SESSION["fromChangeSite"] = true; 
+    //$_SESSION["fromChangeSite"] = true; 
 
     // Move to mysites page
     header('Location: mysites.php');

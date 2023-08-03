@@ -33,8 +33,8 @@ if (!empty($_POST)) {
         // Move the image to the destination folder
         if(move_uploaded_file($_FILES['upload_image']['tmp_name'], $uploadedPath)){
             // Insert the data into the sites table
-            $stmt1 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, image, user_id) VALUE(?, ?, ?, ?, ?, ?)");
-            $stmt1->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $filename, $_SESSION["user_id"]]);
+            $stmt1 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, image, user_id, flg) VALUE(?, ?, ?, ?, ?, ?, ?)");
+            $stmt1->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $filename, $_SESSION["user_id"], 1]);
         }else{
             $statusMsg = "File upload failed";
         }           
@@ -43,8 +43,8 @@ if (!empty($_POST)) {
     // Without image
     }else{
         // Insert the data into the sites table
-        $stmt2 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, user_id) value(?, ?, ?, ?, ?)");
-        $stmt2->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $_SESSION["user_id"]]);
+        $stmt2 = $db->prepare("INSERT INTO sites(latitude, longitude, name, description, user_id, flg) value(?, ?, ?, ?, ?, ?)");
+        $stmt2->execute([$latitude, $longitude, $_POST['sitename'], $_POST['description'], $_SESSION["user_id"], 1]);
     }
 
     // Move to addsite_complete page

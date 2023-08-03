@@ -33,8 +33,8 @@ if (!empty($_POST)) {
     // If there is no error, update the database
     if (!isset($error)) {
         // Insert the data into the member table
-        $stmt = $db->prepare("INSERT INTO member(name, email, pass) VALUE(?, ?, ?)");
-        $stmt->execute([$_POST['username'], $_POST['email'], $h_password]);
+        $stmt = $db->prepare("INSERT INTO member(name, email, pass, flg) VALUE(?, ?, ?, ?)");
+        $stmt->execute([$_POST['username'], $_POST['email'], $h_password, 1]);
 
         // Move to register_complete page
         header('Location: register_complete.php');

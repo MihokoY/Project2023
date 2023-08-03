@@ -11,7 +11,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 // Connect to the database
 require('dbconnect.php');
 //
-$stmt = $db->prepare("SELECT * FROM sites INNER JOIN mymap ON sites.id = mymap.site_id WHERE mymap.user_id = ?");
+$stmt = $db->prepare("SELECT * FROM sites INNER JOIN mymap ON sites.id = mymap.site_id WHERE mymap.user_id = ? and sites.flg = 1");
 $stmt->bindValue(1, $_SESSION["user_id"]);
 $stmt->execute();
 

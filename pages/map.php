@@ -5,7 +5,7 @@ session_start();
 // Connect to the database
 require('dbconnect.php');
 // Get sites information from the sites table
-$stmt = $db->prepare("SELECT * FROM sites");
+$stmt = $db->prepare("SELECT * FROM sites WHERE flg = 1");
 $stmt->execute();
 
 // Initialize array
