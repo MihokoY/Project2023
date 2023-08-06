@@ -22,10 +22,6 @@ function onDeleteButtonClick() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(siteId.toString()) // Convert to json format and attach
         });
-        //.then(response => response.json()) // Receive the returned response by json and pass it to the next then
-        //.then(res => {
-        //    console.log(res); // Returned data
-        //})
 
         // Show the message and transition to mysites page
         if(!alert('Deleted!')){
@@ -34,7 +30,7 @@ function onDeleteButtonClick() {
     }
 }
 
-// When the Change validity button is clicked on the Manage site page
+// When the Change validity button is clicked on the Manage sites and Manage members pages
 function onValidityButtonClick() {
     var answer = confirm('Do you want to change the validity?');
     return answer;

@@ -102,43 +102,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 <input type="button" value="Back" name="back" class="btn btn-success" onclick="location.href='../pages/mysites.php'">
             </form>
         </div>
-    
-        <!--
-        <script>
-            function onChangeButtonClick() {
-                var answer = confirm('Do you want to change this site?');
-                return answer;
-            }
-
-            function onDeleteButtonClick() {
-                // Get site ID from HTML using hidden type
-                var siteId = document.getElementById("siteId").value;
-                //alert(siteId);
-
-                // Show the message to confirm deletion
-                var answer = confirm('Do you want to delete this site?');
-
-                // If the user click "OK"
-                if(answer === true){
-                    // Call deleteSite.php with site ID
-                    fetch('../php/deleteSite.php', { // Destination
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(siteId.toString()) // Convert to json format and attach
-                    });
-                    //.then(response => response.json()) // Receive the returned response by json and pass it to the next then
-                    //.then(res => {
-                    //    console.log(res); // Returned data
-                    //})
-
-                    // Show the message and transition to mysites page
-                    if(!alert('Deleted!')){
-                        location.href = "../pages/mysites.php";
-                    }   
-                }
-            }
-        </script>
-        -->
 
         <!-- Footer -->
         <footer class="footer bg-dark">
@@ -150,6 +113,6 @@ $row = $stmt->fetch(PDO::FETCH_ASSOC);
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
                 integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
                 crossorigin="anonymous"></script>
-        <script src="../js/editSite.js"></script>
+        <script src="../js/confirm.js"></script>
     </body>
 </html>

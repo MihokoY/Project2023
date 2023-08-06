@@ -36,11 +36,6 @@ if (!empty($_POST)) {
         $stmt2->execute([$_POST['sitename'], $_POST['description']]);
     }
 
-    // Show complete message
-    //echo "<script>alert('Changed!');</script>";
-    // Use session to show the cpmplete message on the mysites.php
-    //$_SESSION["fromChangeSite"] = true; 
-
     // Move to mysites page
     header('Location: ../pages/mysites.php');
     exit();

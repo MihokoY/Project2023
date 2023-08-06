@@ -122,17 +122,14 @@ $json = json_encode($siteData);
                 className: "marker-red"
             });
 
-            // When the delete button is clicked
+            // When the "Delete from my map" button is clicked
             function onButtonClick() {
                 answer = confirm('Do you want to remove this site from your map?');
                 if(answer === true){
+                    // Invoke the deleteFav.php
                     fetch('../php/deleteFav.php');
-                    //.then(response => response.json())
-                    //.then(res => {
-                    //    console.log(res);
-                    //    alert(res);
-                    //});
                     
+                    // Show the message
                     if(!alert('Removed!')){
                         window.location.reload();
                     }                  
@@ -147,21 +144,16 @@ $json = json_encode($siteData);
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(e.target.siteId.toString()) // Convert to json format and attach
                 });
-                //.then(response => response.json())
-                //.then(res => {
-                //    //console.log(res);
-                //    alert(res);
-                //});
             }        
 
             // Passing the array from PHP to JavaScript to show markers
             var array = <?php echo $json; ?>;
             var markers;
 
-            // Show markers from the array
+            // Display markers from the array
             array.forEach(elm => {
 
-                // Change the display with or without images    
+                // With image
                 if(elm['image'] !== null){
                         markers = L.marker([elm['latitude'],elm['longitude']], {icon: redMarker})
                                 .addTo(map)
@@ -170,14 +162,16 @@ $json = json_encode($siteData);
                                 .bindPopup("<b>"+ elm['name'] +"</b><br>" 
                                             + elm['description']+"<br><img src=\"../images/"
                                             + elm['image']+"\" width=\"200\" height=\"auto\"><br><br><input type=\"button\" value=\"Delete from my map\" name=\"deleteFav\" onclick=\"onButtonClick();\">");
-                        markers.siteId = elm['siteId']; //Use when this marker is clicked
+                        markers.siteId = elm['siteId']; //Used when this marker is clicked
+                        
+                // Without image
                 }else{
                         markers = L.marker([elm['latitude'],elm['longitude']], {icon: redMarker})
                                 .addTo(map)
                                 .on( 'click', function(e) {  onMarkerClick(e); }) // When the marker is clicked
                                 .bindPopup("<b>"+ elm['name'] +"</b><br>" 
                                             + elm['description']+"<br><br><input type=\"button\" value=\"Delete from my map\" name=\"deleteF\" onclick=\"onButtonClick();\">"); 
-                        markers.siteId = elm['siteId']; //Use when this marker is clicked
+                        markers.siteId = elm['siteId']; //Used when this marker is clicked
                 }
             });
 
@@ -196,12 +190,7 @@ $json = json_encode($siteData);
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(e.latlng.toString()) // Convert to json format and attach
-                })
-                //.then(response => response.json()) // Receive the returned response by json and pass it to the next then
-                //.then(res => {
-                //    console.log(res); // Returned data
-                //})
-                ;
+                });
             }
             map.on('click', onMapClick);
 

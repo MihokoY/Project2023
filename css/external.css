@@ -4,7 +4,7 @@ body {
     background-color: #e2c8a0;
 }
 
-/* Header Title */
+/* Header title */
 .title {
     font-family: 'Irish Grover', cursive;
 }
@@ -27,7 +27,7 @@ body {
     color: inherit;
 }
 
-/* addsite_complete page */
+/* Add site complete page */
 .absolute2 {
     position: absolute;
     top: 45%;
@@ -38,7 +38,7 @@ body {
     color: inherit;
 }
 
-/* register_complete page */
+/* Register complete page */
 .absolute3 {
     position: absolute;
     top: 45%;
@@ -49,7 +49,7 @@ body {
     color: inherit;
 }
 
-/* register_complete page */
+/* Loggedout page */
 .absolute4 {
     position: absolute;
     top: 45%;
@@ -60,9 +60,11 @@ body {
     color: inherit;
 }
 
+/* Carousel for Home page */
 .carousel-item {
-  position: relative;
+    position: relative;
 }
+
 .carousel-caption{
     position: absolute;
     top: 50%;
@@ -73,18 +75,18 @@ body {
     text-decoration: none;
 }
 
-/* Map */
+/* Map for Map page, My map page */
 #map {
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
     margin-bottom: 10px;
-    width: 80%;
+    width: 90%;
     height: 650px;
 }
 
-/* Leaflet red marker for mymap page */
+/* Leaflet red marker for My map page */
 .marker-red {
-  filter: hue-rotate(150deg);
+    filter: hue-rotate(150deg);
 }

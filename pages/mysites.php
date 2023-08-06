@@ -8,12 +8,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     exit;
 }
 
-//If the user transitions after changing the site, show a completion message
-//if(isset($_SESSION["fromChangeSite"]) && $_SESSION["fromChangeSite"] === true){
-//    echo "<script>alert('Changed!');</script>";
-//    $_SESSION["fromChangeSite"] = false;
-//}
-
 // Connect to the database
 require('../php/dbconnect.php');
 // Get site information of the user
